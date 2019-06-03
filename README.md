@@ -1,2 +1,2 @@
 # msAI
-Tools for creating AI models from mass spectrometry data
+Tools for creating AI models for mass spectrometry data
