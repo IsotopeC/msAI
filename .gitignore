@@ -2,3 +2,9 @@
 # PyCharm IDE
 .idea/
 
+
+# Builds
+build/
+dist/
+msAI.egg-info/
+
