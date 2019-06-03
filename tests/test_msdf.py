@@ -1,5 +1,5 @@
 
-import src.msAI.msdf
+import msAI.msdf
 
 import pytest
 
