@@ -11,6 +11,7 @@ This package is in development. Releases are currently development previews and 
 * Plotting: mass spectrum, total ion chromatogram, extracted-ion chromatogram, TBD...
 * Partitioning of data for training, testing, and validation
 * Creation of AI models
+    * Supported AI / machine learning frameworks: TensorFlow, TBD...
 * Model training
 * Evaluation of models
 * Model lifecycle management
