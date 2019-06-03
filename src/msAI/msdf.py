@@ -7,6 +7,8 @@ import pandas as pd
 import pymzml
 
 
+# Various functions for creating and evaluating in-memory data structures from MS data
+
 def obj_mb(obj):
     """
     Return the size of a python object in MBs
