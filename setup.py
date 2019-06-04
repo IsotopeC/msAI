@@ -21,8 +21,8 @@ setuptools.setup(
                  "Topic :: Scientific/Engineering :: Chemistry",
                  "Topic :: Scientific/Engineering :: Mathematics",
                  "Topic :: Scientific/Engineering :: Visualization"],
-    keywords='AI models mass spectrometry MS data mzML lifecycle management training testing validation'
-             'quality analysis QA mass spectrum MS total ion chromatogram TIC extracted-ion chromatogram'
+    keywords='AI models mass spectrometry MS data mzML lifecycle management training testing validation '
+             'quality analysis QA mass spectrum MS total ion chromatogram TIC extracted-ion chromatogram '
              'EIC XIC machine learning artificial intelligence deep neural network',
     install_requires=['numpy', 'pandas', 'matplotlib', 'tensorflow', 'bokeh', 'pymzml'],
     python_requires='>3.4'
