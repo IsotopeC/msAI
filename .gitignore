@@ -6,5 +6,5 @@
 # Builds
 build/
 dist/
-msAI.egg-info/
+*.egg-info/
 
