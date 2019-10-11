@@ -13,7 +13,7 @@ setuptools.setup(
     long_description=readme_description,
     long_description_content_type="text/markdown",
     url="https://github.com/IsotopeC/msAI",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=['docs', 'tests', 'logs']),
     classifiers=["Programming Language :: Python :: 3",
                  "Operating System :: OS Independent",
                  "Topic :: Scientific/Engineering :: Artificial Intelligence",
