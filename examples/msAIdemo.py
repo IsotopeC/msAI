@@ -54,8 +54,7 @@ ms_files
 
 # By default, contents of sub directories will be recursively included
 #   * Can also specify file type
-less_ms_files = msData.MSfileSet(mzml_dir, data_type='mzML', recursive=False)
-less_ms_files
+# less_ms_files = msData.MSfileSet(mzml_dir, data_type='mzML', recursive=False)
 
 # Creating an MSfileSet does not import MS data
 #   * Rather, it provides an summary of what is available
@@ -64,40 +63,40 @@ less_ms_files
 # MS data is accessed using a MSfile interface
 
 # Import MS data from mzML file
-cf1_ms = msData.MZMLfile(sample1_mzml_path)
+sample1_ms = msData.MZMLfile(sample1_mzml_path)
 
 # Access MS metadata
-cf1_ms.run_id
-cf1_ms.run_date
-cf1_ms.ms_file_version
-cf1_ms.spectrum_count
-cf1_ms.peak_count
-cf1_ms.tic_sum
+sample1_ms.run_id
+sample1_ms.run_date
+sample1_ms.ms_file_version
+sample1_ms.spectrum_count
+sample1_ms.peak_count
+sample1_ms.tic_sum
 
 # The 'peaks' and 'spectra' properties hold dataframes
 
 # Spectra
 #   * Index: spec_id
 #   * Columns: rt, peak_count, tic, ms_lvl, filters
-print(cf1_ms.spectra.to_string()[:2000])
+print(sample1_ms.spectra.to_string()[:2000])
 
 # Get an individual spectrum with spec_id value
-cf1_ms.spectra.loc[303]
+sample1_ms.spectra.loc[303]
 
 # Peaks
 #   * First Index Level: spec_id
 #   * Second Index Level: peak_number
 #   * Columns: rt, mz, i
-cf1_ms.peaks
+sample1_ms.peaks
 
 # Summary / distribution of peak values
-cf1_ms.peaks.describe()
+sample1_ms.peaks.describe()
 
 # Get all peaks in a spectrum with spec_id value
-cf1_ms.peaks.loc[303]
+sample1_ms.peaks.loc[303]
 
 # Get a single peak with spec_id and peak_number
-cf1_ms.peaks.loc[303, 100]
+sample1_ms.peaks.loc[303, 100]
 
 
 # samples
@@ -174,17 +173,17 @@ msAIm = SampleMetadata(sample_set1_msAIm_path)
 msAIm
 
 # Define SampleSet and initialize
-cf_set = SampleSet(msAIr_set, msAIm)
-cf_set.init_all_ms()
-cf_set
+sample_set1 = SampleSet(msAIr_set, msAIm)
+sample_set1.init_all_ms()
+sample_set1
 
 # Access same as before
-cf_set.df.loc["EP2421"]
-cf_set.df.loc["EP2421"].plantID
-cf_set.df.loc["EP2421"].tissue
-cf_set.df.loc["EP2421"].site
-cf_set.df.loc["EP2421"].treatment
-cf_set.df.loc["EP2421"].run.ms.run_date
-cf_set.df.loc["EP2421"].run.ms.spectra
-cf_set.df.loc["EP2421"].run.ms.peaks
+sample_set1.df.loc["EP2421"]
+sample_set1.df.loc["EP2421"].plantID
+sample_set1.df.loc["EP2421"].tissue
+sample_set1.df.loc["EP2421"].site
+sample_set1.df.loc["EP2421"].treatment
+sample_set1.df.loc["EP2421"].run.ms.run_date
+sample_set1.df.loc["EP2421"].run.ms.spectra
+sample_set1.df.loc["EP2421"].run.ms.peaks
 
