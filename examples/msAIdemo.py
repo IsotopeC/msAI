@@ -2,7 +2,7 @@
 """
 msAI demo
 
-Demo of creating a sample set from metadata and MS data files
+Demonstration of sample set creation from metadata and MS data files
 
 """
 
@@ -14,16 +14,14 @@ from msAI.metadata import SampleMetadata
 
 
 # Paths to data directories
-data_dir = "./examples/data/mzML"
+mzml_dir = "./examples/data/mzML"
 msAIr_dir = "./examples/data/msAIr"
 msAIm_dir = "./examples/data/msAIm"
 
-# Paths to coneflower example data files
+# Paths to example data files
 csv_path = "./examples/data/metadata/coneflower_metadata.csv"
-cf1_mzml_path = "./tests/msTestData/mzML/EP2421.mzML"
-msAIm_path = "./tests/msTestData/msAIm/coneflower_set_1.msAIm"
-msAIs_path = "./tests/msTestData/msAIs/coneflower_set_1.msAIs"
-
+sample1_mzml_path = "./examples/data/mzML/EP2421.mzML"
+sample_set1_msAIm_path = "./examples/data/msAIm/sample_set1.msAIm"
 
 
 # metadata
@@ -41,22 +39,22 @@ cone_flower_metadata.describe()
 
 # Manually set the dataframe index from an existing dataframe column
 #   (Unless it is not suitable for use as an index)
-cone_flower_metadata.set_index('tissue')
+# cone_flower_metadata.set_index('new_index')
 
 # Import more metadata- multiple metadata files can be used
-more_metadata = SampleMetadata(more_meta_path)
+# more_metadata = SampleMetadata(more_meta_path)
 
 
 # msData
 # --------------------------------------------------------------------------------
 
 # Create set of MS files from a data directory
-ms_files = msData.MSfileSet(data_dir)
+ms_files = msData.MSfileSet(mzml_dir)
 ms_files
 
 # By default, contents of sub directories will be recursively included
 #   * Can also specify file type
-less_ms_files = msData.MSfileSet(data_dir, data_type='mzML', recursive=False)
+less_ms_files = msData.MSfileSet(mzml_dir, data_type='mzML', recursive=False)
 less_ms_files
 
 # Creating an MSfileSet does not import MS data
@@ -66,7 +64,7 @@ less_ms_files
 # MS data is accessed using a MSfile interface
 
 # Import MS data from mzML file
-cf1_ms = msData.MZMLfile(cf1_mzml_path)
+cf1_ms = msData.MZMLfile(sample1_mzml_path)
 
 # Access MS metadata
 cf1_ms.run_id
@@ -159,7 +157,7 @@ sample_set.save_all_ms(msAIr_dir)
 sample_set.df['msAIr_hash']
 
 # Save SampleSet metadata as a .msAIm file to a directory
-sample_set.save_metadata(msAIm_dir, "coneflower_set_1")
+sample_set.save_metadata(msAIm_dir, "sample_set1")
 
 
 # Reload previously saved msAIr data
@@ -172,7 +170,7 @@ msAIr_set
 ms_files
 
 # Define SampleMetadata from a .msAIm file
-msAIm = SampleMetadata(msAIm_path)
+msAIm = SampleMetadata(sample_set1_msAIm_path)
 msAIm
 
 # Define SampleSet and initialize
