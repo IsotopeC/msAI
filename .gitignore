@@ -1,10 +1,19 @@
 
 # PyCharm IDE
 .idea/
+.pycharmrc
 
 
 # Builds
 build/
 dist/
 *.egg-info/
+
+
+# Logs
+/logs/
+
+
+# Docs
+/docs/_build/
 
