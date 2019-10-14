@@ -6,12 +6,12 @@ with open("README.md", "r") as readme_file:
 
 setuptools.setup(
     name="msAI",
-    version="0.1.1.dev2",
+    version="1.0.0.dev",
     author="Calvin Peters",
     author_email="calvin.isotope@gmail.com",
-    description="Tools for creating AI models for mass spectrometry data",
+    description="Tools to create AI models for mass spectrometry data",
     long_description=readme_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="https://github.com/IsotopeC/msAI",
     packages=setuptools.find_packages(exclude=['docs', 'tests', 'logs']),
     classifiers=["Programming Language :: Python :: 3",
@@ -23,7 +23,7 @@ setuptools.setup(
                  "Topic :: Scientific/Engineering :: Visualization"],
     keywords='AI models mass spectrometry MS data mzML spectrum ion chromatogram TIC '
              'extracted-ion EIC XIC machine learning artificial intelligence deep neural network',
-    install_requires=['numpy', 'pandas', 'matplotlib', 'tensorflow', 'bokeh', 'pymzml'],
-    python_requires='>3.4'
+    install_requires=['numpy', 'pandas', 'tensorflow', 'pymzml'],
+    python_requires='>3.6'
 )
 

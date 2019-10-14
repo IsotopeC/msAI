@@ -1,29 +1,44 @@
 
-# Testing
-pytest
-coverage
-
-
-# DS
+# Data Science
+#------------------------------------------------
 numpy
 pandas
 matplotlib
-#seaborn
-scikit-learn
-scipy
-bokeh
+seaborn
+#scikit-learn
+#scipy
+#bokeh
 
 
-# DL
-#tensorflow
+# Machine Learning
+#------------------------------------------------
+tensorflow
 #tensorflow-gpu
 
 
-# Vis
-#vispy
-#pyqt5
-
-
 # MS
+#------------------------------------------------
 pymzml
-plotly < 2.0
+
+
+# Building
+#------------------------------------------------
+#setuptools
+#wheel
+
+
+# PyPI
+#------------------------------------------------
+#twine
+
+
+# Testing
+#------------------------------------------------
+#pytest
+#coverage
+
+
+# Docs
+#------------------------------------------------
+#sphinx
+#sphinx_rtd_theme
