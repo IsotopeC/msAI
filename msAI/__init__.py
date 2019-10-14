@@ -149,9 +149,9 @@ def set_mp_support(mode='auto', workers='auto'):
 
 
 # Set logging mode
-# logger = set_logging('dev')
+logger = set_logging('dev')
 # logger = set_logging('release')
-logger = set_logging('lib')
+# logger = set_logging('lib')
 # logger = set_logging('none')
 
 logger.info("msAI Starting")
