@@ -6,7 +6,7 @@ with open("README.md", "r") as readme_file:
 
 setuptools.setup(
     name="msAI",
-    version="1.0.0.dev1",
+    version="1.0.0.dev",
     author="Calvin Peters",
     author_email="calvin.isotope@gmail.com",
     description="Tools to create AI models for mass spectrometry data",
