@@ -11,9 +11,9 @@ from tests.config import MSfileKey, TestMSspectrum, TestMSpeak
 
 
 # Location of example MS data saved as mzML files
-mzml_files_list = ["msTestData/mzML/EP0482.mzML",
-                   "msTestData/mzML/EP2421.mzML",
-                   "msTestData/mzML/EP2536.mzML"]
+mzml_files_list = ["data/mzML/EP0482.mzML",
+                   "data/mzML/EP2421.mzML",
+                   "data/mzML/EP2536.mzML"]
 
 
 # Provide correct values for the example MS data
