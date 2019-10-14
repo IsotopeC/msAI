@@ -23,22 +23,22 @@ pymzml
 
 # Building
 #------------------------------------------------
-#setuptools
-#wheel
+setuptools
+wheel
 
 
 # PyPI
 #------------------------------------------------
-#twine
+twine
 
 
 # Testing
 #------------------------------------------------
-#pytest
-#coverage
+pytest
+coverage
 
 
 # Docs
 #------------------------------------------------
-#sphinx
-#sphinx_rtd_theme
+sphinx==2.2.0
+sphinx_rtd_theme

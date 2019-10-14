@@ -19,7 +19,10 @@ copyright = '2019'
 author = 'Calvin'
 
 # Full version, including alpha/beta/rc tags
-release = '0.1.1.dev3'
+release = '1.1.1.dev0'
+
+# File to use as the master doc
+master_doc = 'index'
 
 
 # General configuration
