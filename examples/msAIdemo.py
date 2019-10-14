@@ -2,6 +2,8 @@
 """
 msAI demo
 
+Demo of creating a sample set from metadata and MS data files
+
 """
 
 
@@ -22,8 +24,6 @@ cf1_mzml_path = "./tests/msTestData/mzML/EP2421.mzML"
 msAIm_path = "./tests/msTestData/msAIm/coneflower_set_1.msAIm"
 msAIs_path = "./tests/msTestData/msAIs/coneflower_set_1.msAIs"
 
-
-# Demo of msAI modules for creating a sample set from metadata and MS data files
 
 
 # metadata
