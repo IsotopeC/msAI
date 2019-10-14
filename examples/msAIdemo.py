@@ -13,7 +13,7 @@ from msAI.samples import SampleSet
 from msAI.metadata import SampleMetadata
 
 
-# Paths to data directories
+# Paths to example data directories
 mzml_dir = "./examples/data/mzML"
 msAIr_dir = "./examples/data/msAIr"
 msAIm_dir = "./examples/data/msAIm"
