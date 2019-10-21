@@ -50,7 +50,7 @@ html_theme = 'sphinx_rtd_theme'
 # Paths that contain custom static files (such as style sheets), relative to this directory
 #   These are copied after the builtin static files,
 #   so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 
 # Autodoc configuration
@@ -58,7 +58,7 @@ html_static_path = ['_static']
 # Default options for all autodoc directives
 autodoc_default_options = {
     'member-order': 'bysource',
-    'special-members': "__init__ __repr__",
+    # 'special-members': '__init__',
     'undoc-members': True,
     # 'exclude-members': '__weakref__',
     'private-members': True,
@@ -67,14 +67,16 @@ autodoc_default_options = {
     'show-inheritance': True,
 }
 
+# Concat class init method to main
+autoclass_content = "both"
+
 
 # Napoleon configuration
 # --------------------------------------------------------------------------------
-# * signifies changed from default
 napoleon_google_docstring = True
-napoleon_numpy_docstring = False                # *
+napoleon_numpy_docstring = False
 napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = False
+napoleon_include_private_with_doc = True
 napoleon_include_special_with_doc = True
 napoleon_use_admonition_for_examples = False
 napoleon_use_admonition_for_notes = False
