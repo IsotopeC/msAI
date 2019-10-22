@@ -1,8 +1,5 @@
 
-"""
-miscDecos
-
-* Miscellaneous decorator functions
+"""Miscellaneous decorator functions.
 
 """
 
@@ -19,12 +16,12 @@ import pandas
 
 
 def log_timer(func):
-    """
-    Logs the runtime of the decorated function
-    If the function's instance object has a dataframe attribute (df), it's shape will be included
+    """Logs the runtime and dataframe shape (if present) of the decorated function.
 
-    The wrapped function's own module logger will be used to create the log
+    If the passed function's instance object has a dataframe attribute (df), it's shape will be included.
+    The wrapped function's own module logger will be used to create the log.
     """
+
     @functools.wraps(func)
     def wrapper_timer(*args, **kwargs):
         start_time = time.perf_counter()
