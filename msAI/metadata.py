@@ -1,13 +1,18 @@
 
-"""
-metadata
+"""Module for importing sample metadata into dataframes.
 
-* Extraction of sample metadata
-* Verification of metadata usability
-* Auto indexing of metadata
+Features provided include:
 
-Todos
-    *
+    * Extraction of metadata from various file types
+    * Importing metadata into a dataframe
+    * Verification of metadata usability
+    * Auto indexing of metadata
+
+Todo
+    * Move .msAIm saving to this module
+    * Refactor auto-indexing
+    * Anomaly detection
+    * Additional file types: TBD...
 
 """
 
@@ -26,13 +31,14 @@ logger = logging.getLogger(__name__)
 
 
 class SampleMetadata:
-    """Imports sample metadata from a supported type (currently only .CSV and .msAIm) into a dataframe.
+    """Imports sample metadata from a supported type into a dataframe.
 
-    Supported file types: .csv, .msAIm, TBD... (A .msAIm file can be created from a previous ``SampleSet``).
+    Supported file types: .csv, .msAIm, TBD...
+    (A .msAIm file can be created from a previous ``SampleSet``).
 
     Content from the metadata file is initially imported into a dataframe with a default numerical index.
     Metadata labels and values are analyzed and if possible, a new index is assigned from an existing column.
-    This index is used to match metadata with sample file.
+    This index is used to match metadata with MS data.
 
     Requirements to auto index metadata imported into a dataframe:
 
@@ -42,10 +48,21 @@ class SampleMetadata:
 
             * All column values are unique
             * All entries/rows have a value for this column
-
     """
+
     @log_timer
-    def __init__(self, file_path, auto_index=True):
+    def __init__(self, file_path: str, auto_index: bool = True):
+        """
+        Args:
+            file_path: A string representation of the path to the metadata file.
+                Path can be relative or absolute.
+            auto_index: A boolean indicating if the metadata should be automatically indexed (if possible).
+                Default is True.
+
+        Raises:
+            MetadataInitError: For an invalid file type/extension.
+        """
+
         self.file_path = file_path
 
         name, ext = os.path.splitext(self.file_path)
@@ -71,27 +88,34 @@ class SampleMetadata:
             raise MetadataInitError(f"Invalid file type/extension: {self.file_path}")
 
     def __repr__(self):
+        """Returns a string representation of the metadata dataframe."""
+
         return self._df.to_string()
 
     @property
     def df(self):
-        """
-        Get a dataframe of metadata
-        """
+        """Get the metadata dataframe."""
+
         return self._df
 
     def _verify_import(self):
+        """Verifies the imported metadata is usable.
+
+        Ensures at least one metadata entry/row and
+        at least two metadata labels/columns exist.
+
+        Raises:
+            MetadataVerifyError: If No metadata entries or not enough metadata labels are found
         """
-        Verify imported metadata is usable
-        """
+
         def verify_entries_count():
-            """Ensure at least 1 metadata entry/row exist"""
+            # Ensure at least one metadata entry/row exists
             row_count = self._df.shape[0]
             if row_count < 1:
                 raise MetadataVerifyError("No metadata entries found")
 
         def verify_label_count():
-            """Ensure at least 2 metadata labels/columns exist"""
+            # Ensure at least two metadata labels/columns exist
             column_count = self._df.columns.size
             if column_count < 2:
                 raise MetadataVerifyError(f"Not enough metadata labels: {column_count} labels found")
@@ -100,10 +124,11 @@ class SampleMetadata:
         verify_label_count()
 
     def _auto_index(self):
+        """Attempts to identify and set the dataframe index from a metadata label/column.
+
+        This index is used to match metadata to ``SampleRun``.
         """
-        Attempt to identify and set the dataframe index from a column in the metadata
-            This index is used to match metadata to SampleRun
-        """
+
         def most_unique_label():
             """
             Get the label(s)/column(s) with the most unique values - a possible index
@@ -150,15 +175,17 @@ class SampleMetadata:
             self._df.set_index(index_name, inplace=True, verify_integrity=True)
 
     def describe(self):
-        """
-        Print a summary of metadata contents
-        """
+        """Prints a summary of metadata contents."""
+
         print(self._df.describe().to_string())
 
-    def set_index(self, new_index):
-        """
-        Manually set the dataframe index from an existing dataframe column
+    def set_index(self, new_index: str) -> None:
+        """Manually sets the metadata dataframe index to an existing label/column.
 
-        This index is used to match metadata to SampleRun
+        This index is used to match metadata to ``SampleRun``.
+
+        Args:
+            new_index: The name of the metadata label/column to use as the index.
         """
+
         self._df.set_index(new_index, inplace=True, verify_integrity=True)
