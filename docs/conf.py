@@ -84,3 +84,9 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+
+# Default role
+# --------------------------------------------------------------------------------
+# reST role to use as the default role, that is, for text marked up `like this`
+default_role = 'py:obj'

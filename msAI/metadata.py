@@ -1,8 +1,7 @@
 
 """Module for importing sample metadata into dataframes.
 
-Features provided include:
-
+Features provided include
     * Extraction of metadata from various file types
     * Importing metadata into a dataframe
     * Verification of metadata usability
@@ -31,10 +30,10 @@ logger = logging.getLogger(__name__)
 
 
 class SampleMetadata:
-    """Imports sample metadata from a supported type into a dataframe.
+    """Imports sample metadata from a supported file type into a dataframe.
 
     Supported file types: .csv, .msAIm, TBD...
-    (A .msAIm file can be created from a previous ``SampleSet``).
+    (A .msAIm file can be created from a previous `.SampleSet`).
 
     Content from the metadata file is initially imported into a dataframe with a default numerical index.
     Metadata labels and values are analyzed and if possible, a new index is assigned from an existing column.
