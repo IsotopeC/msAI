@@ -9,9 +9,9 @@ Features provided include
 
 Todo
     * Move .msAIm saving to this module
-    * Refactor auto-indexing
-    * Anomaly detection
-    * Additional file types: TBD...
+    * Refactor auto indexing
+    * Add anomaly detection
+    * Add additional file types: TBD...
 
 """
 
@@ -30,17 +30,16 @@ logger = logging.getLogger(__name__)
 
 
 class SampleMetadata:
-    """Imports sample metadata from a supported file type into a dataframe.
+    """Imports sample metadata from a supported file type into a dataframe and assigns an index.
 
-    Supported file types: .csv, .msAIm, TBD...
-    (A .msAIm file can be created from a previous `.SampleSet`).
+    Supported file types: *.csv*, *.msAIm*, TBD...
+    (A *.msAIm* file can be created from a previous `.SampleSet`).
 
     Content from the metadata file is initially imported into a dataframe with a default numerical index.
-    Metadata labels and values are analyzed and if possible, a new index is assigned from an existing column.
-    This index is used to match metadata with MS data.
+    By default, metadata labels and values are analyzed and if possible, a new index is assigned from an existing column.
+    This index is used by `.SampleSet` to match this metadata with corresponding MS data in `.MSfileSet`.
 
     Requirements to auto index metadata imported into a dataframe:
-
         * Dataframe has 1 or more rows
         * Dataframe has 2 or more columns
         * For one and only one column:
@@ -55,9 +54,10 @@ class SampleMetadata:
         Args:
             file_path: A string representation of the path to the metadata file.
                 Path can be relative or absolute.
-            auto_index: A boolean indicating if the metadata should be automatically indexed (if possible).
+            auto_index (optional): A boolean indicating if the metadata should be automatically indexed.
                 Default is True.
-
+        Attributes:
+            _hf (`DataFrame`): The dataframe of the metadata.
         Raises:
             MetadataInitError: For an invalid file type/extension.
         """
@@ -67,7 +67,7 @@ class SampleMetadata:
         name, ext = os.path.splitext(self.file_path)
 
         if ext.casefold() == ".csv":
-            self._hf = pd.read_csv(self.file_path)
+            self._hf: pd.DataFrame = pd.read_csv(self.file_path)
 
             # Make a high fidelity copy, and leave the raw/original untouched for future reference if needed
             self._df = self._hf.copy()
@@ -93,7 +93,7 @@ class SampleMetadata:
 
     @property
     def df(self):
-        """Get the metadata dataframe."""
+        """The dataframe of the metadata."""
 
         return self._df
 
