@@ -6,7 +6,9 @@ msData
 * Creation of in-memory data structures
 
 Todos:
+    * Change MSfile to dataclass
     * Change properties to attributes
+    * Create types for dataframes
 
 """
 
