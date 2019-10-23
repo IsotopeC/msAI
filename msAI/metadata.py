@@ -97,12 +97,6 @@ class SampleMetadata:
 
         return self.df.to_string()
 
-    # @property
-    # def df(self):
-    #     """The dataframe of the metadata."""
-    # 
-    #     return self.df
-
     def _verify_import(self):
         """Verifies the imported metadata is usable.
 
