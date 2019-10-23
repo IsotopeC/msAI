@@ -8,7 +8,6 @@ Features provided include
     * Auto indexing of metadata
 
 Todo
-    * Change properties to attributes
     * Move .msAIm saving to this module
     * Refactor auto indexing
     * Add anomaly detection
@@ -60,24 +59,24 @@ class SampleMetadata:
             auto_index (optional): A boolean indicating if the metadata should be automatically indexed.
                 Default is True.
 
-        Attributes:
-            file_path (str): The string representation of the path to the metadata file.
-            _hf (DataFrame): High fidelity copy of raw imported data.
-
         Raises:
             MetadataInitError: For an invalid file type/extension.
         """
 
         self.file_path: str = file_path
+        """String representation of the path to the metadata file."""
 
         name, ext = os.path.splitext(self.file_path)
 
         if ext.casefold() == ".csv":
-            # High fidelity import (leave this raw/original data untouched for future reference if needed)
-            self._hf = pd.read_csv(self.file_path)
+            self._hf: pd.DataFrame = pd.read_csv(self.file_path)
+            """High fidelity copy of imported data.
+            
+            Leave this original data untouched for future reference if needed.
+            """
 
-            # Make a copy of data
-            self._df = self._hf.copy()
+            self.df: pd.DataFrame = self._hf.copy()
+            """Dataframe of the metadata."""
 
             # Verify imported metadata is usable
             self._verify_import()
@@ -88,7 +87,7 @@ class SampleMetadata:
 
         elif ext.casefold() == ".msaim":
             metadata, hash_result = Saver.load_obj(self.file_path)
-            self._df = metadata
+            self.df = metadata
 
         else:
             raise MetadataInitError(f"Invalid file type/extension: {self.file_path}")
@@ -96,13 +95,13 @@ class SampleMetadata:
     def __repr__(self):
         """Returns a string representation of the metadata dataframe."""
 
-        return self._df.to_string()
+        return self.df.to_string()
 
-    @property
-    def df(self):
-        """The dataframe of the metadata."""
-
-        return self._df
+    # @property
+    # def df(self):
+    #     """The dataframe of the metadata."""
+    # 
+    #     return self.df
 
     def _verify_import(self):
         """Verifies the imported metadata is usable.
@@ -116,13 +115,13 @@ class SampleMetadata:
 
         def verify_entries_count():
             # Ensure at least one metadata entry/row exists
-            row_count = self._df.shape[0]
+            row_count = self.df.shape[0]
             if row_count < 1:
                 raise MetadataVerifyError("No metadata entries found")
 
         def verify_label_count():
             # Ensure at least two metadata labels/columns exist
-            column_count = self._df.columns.size
+            column_count = self.df.columns.size
             if column_count < 2:
                 raise MetadataVerifyError(f"Not enough metadata labels: {column_count} labels found")
 
@@ -142,7 +141,7 @@ class SampleMetadata:
 
             Returns a series of count value index by label name
             """
-            return self._df.nunique().nlargest(1, keep='all')
+            return self.df.nunique().nlargest(1, keep='all')
 
         def verify_index(possible_index):
             """
@@ -151,7 +150,7 @@ class SampleMetadata:
 
             def verify_unique_label_values():
                 """Ensure a label/column has a unique value for all entries/rows"""
-                row_count = self._df.shape[0]
+                row_count = self.df.shape[0]
                 unique_col_value_count = possible_index[0]
 
                 if row_count != unique_col_value_count:
@@ -178,12 +177,12 @@ class SampleMetadata:
             logger.error(f"Can not auto index metadata: {err}")
         else:
             index_name = possible_index_label.index[0]
-            self._df.set_index(index_name, inplace=True, verify_integrity=True)
+            self.df.set_index(index_name, inplace=True, verify_integrity=True)
 
     def describe(self):
         """Prints a summary of metadata contents."""
 
-        print(self._df.describe().to_string())
+        print(self.df.describe().to_string())
 
     def set_index(self,
                   new_index: str):
@@ -195,4 +194,4 @@ class SampleMetadata:
             new_index: The name of the metadata label/column to use as the index.
         """
 
-        self._df.set_index(new_index, inplace=True, verify_integrity=True)
+        self.df.set_index(new_index, inplace=True, verify_integrity=True)
