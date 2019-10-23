@@ -49,7 +49,9 @@ class SampleMetadata:
     """
 
     @log_timer
-    def __init__(self, file_path: str, auto_index: bool = True):
+    def __init__(self,
+                 file_path: str,
+                 auto_index: bool = True):
         """
         Args:
             file_path: A string representation of the path to the metadata file.
@@ -125,7 +127,7 @@ class SampleMetadata:
     def _auto_index(self):
         """Attempts to identify and set the dataframe index from a metadata label/column.
 
-        This index is used to match metadata to ``SampleRun``.
+        This index is used to match metadata to `.SampleRun`.
         """
 
         def most_unique_label():
@@ -178,10 +180,12 @@ class SampleMetadata:
 
         print(self._df.describe().to_string())
 
-    def set_index(self, new_index: str) -> None:
+    def set_index(self,
+                  new_index: str
+                  ) -> None:
         """Manually sets the metadata dataframe index to an existing label/column.
 
-        This index is used to match metadata to ``SampleRun``.
+        This index is used to match metadata to `.SampleRun`.
 
         Args:
             new_index: The name of the metadata label/column to use as the index.

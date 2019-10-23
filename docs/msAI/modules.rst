@@ -4,11 +4,11 @@ msAI Modules
 ############
 
 .. toctree::
-    :maxdepth: 1
+   :maxdepth: 1
 
-    metadata
-    msData
-    samples
-    miscUtils
-    miscDecos
-    errors
+   metadata
+   msData
+   samples
+   miscUtils
+   miscDecos
+   errors

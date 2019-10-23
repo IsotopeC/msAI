@@ -1,6 +1,6 @@
 .. msAI documentation root index
 
-Welcome to msAI's documentation!
+msAI's Documentation
 ================================
 
 .. toctree::
