@@ -66,6 +66,9 @@ class SampleMetadata:
         self.file_path: str = file_path
         """String representation of the path to the metadata file."""
 
+        self.df: pd.DataFrame
+        """Dataframe of the metadata."""
+
         name, ext = os.path.splitext(self.file_path)
 
         if ext.casefold() == ".csv":
@@ -75,8 +78,7 @@ class SampleMetadata:
             Leave this original data untouched for future reference if needed.
             """
 
-            self.df: pd.DataFrame = self._hf.copy()
-            """Dataframe of the metadata."""
+            self.df = self._hf.copy()
 
             # Verify imported metadata is usable
             self._verify_import()
