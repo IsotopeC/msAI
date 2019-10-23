@@ -8,6 +8,7 @@ Features provided include
     * Auto indexing of metadata
 
 Todo
+    * Change properties to attributes
     * Move .msAIm saving to this module
     * Refactor auto indexing
     * Add anomaly detection
@@ -58,20 +59,24 @@ class SampleMetadata:
                 Path can be relative or absolute.
             auto_index (optional): A boolean indicating if the metadata should be automatically indexed.
                 Default is True.
+
         Attributes:
-            _hf (`DataFrame`): The dataframe of the metadata.
+            file_path (str): The string representation of the path to the metadata file.
+            _hf (DataFrame): High fidelity copy of raw imported data.
+
         Raises:
             MetadataInitError: For an invalid file type/extension.
         """
 
-        self.file_path = file_path
+        self.file_path: str = file_path
 
         name, ext = os.path.splitext(self.file_path)
 
         if ext.casefold() == ".csv":
-            self._hf: pd.DataFrame = pd.read_csv(self.file_path)
+            # High fidelity import (leave this raw/original data untouched for future reference if needed)
+            self._hf = pd.read_csv(self.file_path)
 
-            # Make a high fidelity copy, and leave the raw/original untouched for future reference if needed
+            # Make a copy of data
             self._df = self._hf.copy()
 
             # Verify imported metadata is usable
@@ -181,8 +186,7 @@ class SampleMetadata:
         print(self._df.describe().to_string())
 
     def set_index(self,
-                  new_index: str
-                  ) -> None:
+                  new_index: str):
         """Manually sets the metadata dataframe index to an existing label/column.
 
         This index is used to match metadata to `.SampleRun`.
