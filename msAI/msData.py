@@ -6,7 +6,7 @@ msData
 * Creation of in-memory data structures
 
 Todos:
-    *
+    * Change properties to attributes
 
 """
 
