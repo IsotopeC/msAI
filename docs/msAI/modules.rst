@@ -4,7 +4,7 @@ msAI Modules
 ############
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    metadata
    msData

@@ -14,7 +14,7 @@ Todo
     * Add additional file types: TBD...
 
 """
-
+from typing import NewType
 
 from msAI.errors import MetadataVerifyError, MetadataIndexError, MetadataInitError
 from msAI.miscUtils import Saver
@@ -26,7 +26,11 @@ import logging
 import pandas as pd
 
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
+"""Module logger configured with this module's name."""
+
+MetaDF: NewType = NewType("MetaDF",  pd.DataFrame)
+"""Type derived from DataFrame for use with metadata."""
 
 
 class SampleMetadata:
@@ -46,13 +50,24 @@ class SampleMetadata:
 
             * All column values are unique
             * All entries/rows have a value for this column
+
+    Attributes:
+        file_path (str): A string representation of the path to the metadata file.
+        df (`MetaDF`): A dataframe of the metadata.
+        _hf (`pd.DataFrame`): High fidelity copy of imported data.
+            Leave this original data untouched for future reference if needed.
     """
+
+    file_path: str
+    df: MetaDF
+    _hf: pd.DataFrame
 
     @log_timer
     def __init__(self,
                  file_path: str,
                  auto_index: bool = True):
-        """
+        """Initializes an instance of the SampleMetadata class.
+
         Args:
             file_path: A string representation of the path to the metadata file.
                 Path can be relative or absolute.
@@ -63,22 +78,14 @@ class SampleMetadata:
             MetadataInitError: For an invalid file type/extension.
         """
 
-        self.file_path: str = file_path
-        """String representation of the path to the metadata file."""
-
-        self.df: pd.DataFrame
-        """Dataframe of the metadata."""
+        self.file_path = file_path
 
         name, ext = os.path.splitext(self.file_path)
 
         if ext.casefold() == ".csv":
-            self._hf: pd.DataFrame = pd.read_csv(self.file_path)
-            """High fidelity copy of imported data.
-            
-            Leave this original data untouched for future reference if needed.
-            """
+            self._hf = pd.read_csv(self.file_path)
 
-            self.df = self._hf.copy()
+            self.df: MetaDF = self._hf.copy()
 
             # Verify imported metadata is usable
             self._verify_import()
