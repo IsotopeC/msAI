@@ -14,6 +14,8 @@ Todo
     * Add additional file types: TBD...
 
 """
+
+
 from typing import NewType
 
 from msAI.errors import MetadataVerifyError, MetadataIndexError, MetadataInitError
@@ -53,20 +55,23 @@ class SampleMetadata:
 
     Attributes:
         file_path (str): A string representation of the path to the metadata file.
-        df (`MetaDF`): A dataframe of the metadata.
-        _hf (`pd.DataFrame`): High fidelity copy of imported data.
-            Leave this original data untouched for future reference if needed.
+        df (`MetaDF`): The metadata dataframe.
     """
 
-    file_path: str
-    df: MetaDF
+    # file_path: str
+    # df: MetaDF
+
     _hf: pd.DataFrame
+    """`MetaDF`: High fidelity copy of imported data.
+    
+        Leave this original data untouched for future reference if needed.
+    """
 
     @log_timer
     def __init__(self,
                  file_path: str,
                  auto_index: bool = True):
-        """Initializes an instance of the SampleMetadata class.
+        """Initializes an instance of SampleMetadata class.
 
         Args:
             file_path: A string representation of the path to the metadata file.
@@ -85,7 +90,7 @@ class SampleMetadata:
         if ext.casefold() == ".csv":
             self._hf = pd.read_csv(self.file_path)
 
-            self.df: MetaDF = self._hf.copy()
+            self.df  = self._hf.copy()
 
             # Verify imported metadata is usable
             self._verify_import()
