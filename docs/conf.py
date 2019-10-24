@@ -28,8 +28,8 @@ master_doc = 'index'
 # General configuration
 # --------------------------------------------------------------------------------
 # Sphinx / custom extension modules
-# extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
-extensions = ['sphinx.ext.napoleon']
+# extensions = ['sphinx.ext.autodoc']
+extensions = ['sphinx.ext.napoleon', 'sphinx.ext.viewcode']
 
 # Paths that contain templates, relative to this directory
 templates_path = ['_templates']
