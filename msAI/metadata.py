@@ -34,6 +34,9 @@ logger: logging.Logger = logging.getLogger(__name__)
 DF: NewType = NewType("DF",  pd.DataFrame)
 """Type derived from Pandas DataFrame."""
 
+Series: NewType = NewType("Series",  pd.Series)
+"""Type derived from Pandas Series."""
+
 MetaDF: NewType = NewType("MetaDF",  DF)
 """Type derived from DataFrame for use with metadata."""
 
@@ -89,6 +92,7 @@ class SampleMetadata:
 
         name, ext = os.path.splitext(self.file_path)
 
+        # CSV import
         if ext.casefold() == ".csv":
             self._hf = pd.read_csv(self.file_path)
 
@@ -101,6 +105,7 @@ class SampleMetadata:
                 # Assign an index, if possible
                 self._auto_index()
 
+        # msAIm import
         elif ext.casefold() == ".msaim":
             metadata, hash_result = Saver.load_obj(self.file_path)
             self.df = metadata
@@ -144,22 +149,23 @@ class SampleMetadata:
         This index is used to match metadata to `.SampleRun`.
         """
 
-        def most_unique_label():
-            """
-            Get the label(s)/column(s) with the most unique values - a possible index
-                More than one label will be returned if there are ties
+        def most_unique_label() -> Series:
+            """Gets the label(s)/column(s) with the most unique values - a possible index.
 
-            Returns a series of count value index by label name
+            More than one label will be returned if there are ties.
+
+            Returns:
+                A series of count value index by label name
             """
+
             return self.df.nunique().nlargest(1, keep='all')
 
         def verify_index(possible_index):
-            """
-            Ensure contents of imported metadata is suitable for auto indexing
-            """
+            """Ensures contents of imported metadata is suitable for auto indexing."""
 
             def verify_unique_label_values():
-                """Ensure a label/column has a unique value for all entries/rows"""
+                """Ensures a label/column has a unique value for all entries/rows."""
+
                 row_count = self.df.shape[0]
                 unique_col_value_count = possible_index[0]
 
@@ -167,10 +173,11 @@ class SampleMetadata:
                     raise MetadataIndexError(f"Count of unique metadata labels (n={unique_col_value_count}) not equal to entry count (n={row_count})")
 
             def verify_single_unique_label():
+                """Ensures a only a single label/column has a unique value for all entries/rows.
+
+                Otherwise, more than one label is suitable for use as index- the user must decide.
                 """
-                Ensure a only a single label/column has a unique value for all entries/rows
-                    Otherwise, more than one label is suitable for use as index- the user must decide
-                """
+
                 possible_index_count = possible_index.shape[0]
 
                 if possible_index_count > 1:
