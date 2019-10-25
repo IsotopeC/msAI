@@ -31,7 +31,10 @@ import pandas as pd
 logger: logging.Logger = logging.getLogger(__name__)
 """Module logger configured with this module's name."""
 
-MetaDF: NewType = NewType("MetaDF",  pd.DataFrame)
+DF: NewType = NewType("DF",  pd.DataFrame)
+"""Type derived from Pandas DataFrame."""
+
+MetaDF: NewType = NewType("MetaDF",  DF)
 """Type derived from DataFrame for use with metadata."""
 
 
@@ -52,20 +55,19 @@ class SampleMetadata:
 
             * All column values are unique
             * All entries/rows have a value for this column
-
-    Attributes:
-        file_path (str): A string representation of the path to the metadata file.
-        df (`MetaDF`): The metadata dataframe.
     """
 
-    # file_path: str
-    # df: MetaDF
+    file_path: str
+    """A string representation of the path to the metadata file."""
 
     _hf: pd.DataFrame
-    """`MetaDF`: High fidelity copy of imported data.
+    """High fidelity copy of imported data.
     
-        Leave this original data untouched for future reference if needed.
+    Leave this original data untouched for future reference if needed.
     """
+
+    df: DF
+    """The metadata dataframe."""
 
     @log_timer
     def __init__(self,
@@ -90,7 +92,7 @@ class SampleMetadata:
         if ext.casefold() == ".csv":
             self._hf = pd.read_csv(self.file_path)
 
-            self.df  = self._hf.copy()
+            self.df = self._hf.copy()
 
             # Verify imported metadata is usable
             self._verify_import()
