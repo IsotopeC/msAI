@@ -38,7 +38,7 @@ Series: NewType = NewType("Series",  pd.Series)
 """Type derived from Pandas Series."""
 
 MetaDF: NewType = NewType("MetaDF",  DF)
-"""Type derived from DataFrame for use with metadata."""
+"""Type derived from DF for use with metadata."""
 
 
 class SampleMetadata:

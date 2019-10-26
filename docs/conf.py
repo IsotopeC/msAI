@@ -29,7 +29,9 @@ master_doc = 'index'
 # --------------------------------------------------------------------------------
 # Sphinx / custom extension modules
 # extensions = ['sphinx.ext.autodoc']
-extensions = ['sphinx.ext.napoleon', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.napoleon',
+              'sphinx_autodoc_typehints',
+              'sphinx.ext.viewcode']
 
 # Paths that contain templates, relative to this directory
 templates_path = ['_templates']
@@ -53,6 +55,12 @@ html_theme = 'sphinx_rtd_theme'
 # html_static_path = ['_static']
 
 
+# Default role
+# --------------------------------------------------------------------------------
+# reST role to use as the default role, that is, for text marked up `like this`
+default_role = 'py:obj'
+
+
 # Autodoc configuration
 # --------------------------------------------------------------------------------
 # Default options for all autodoc directives
@@ -72,7 +80,7 @@ autoclass_content = "class"
 # autoclass_content = "both"
 
 
-# Napoleon configuration
+# Napoleon ext configuration
 # --------------------------------------------------------------------------------
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
@@ -87,7 +95,10 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 
 
-# Default role
+# Autodoc type hints ext configuration
 # --------------------------------------------------------------------------------
-# reST role to use as the default role, that is, for text marked up `like this`
-default_role = 'py:obj'
+set_type_checking_flag = True               # Set true to enable "expensive" typing imports
+typehints_fully_qualified = False           # Set false to just display class names
+always_document_param_types = True          # Set true to add stub documentation for undocumented parameters
+typehints_document_rtype = True             # Set false to never add an :rtype: directive
+
