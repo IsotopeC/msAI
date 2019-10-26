@@ -79,6 +79,7 @@ autodoc_default_options = {
 autoclass_content = "class"
 # autoclass_content = "both"
 
+autodoc_inherit_docstrings = True
 
 # Napoleon ext configuration
 # --------------------------------------------------------------------------------
