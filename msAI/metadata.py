@@ -16,9 +16,8 @@ Todo
 """
 
 
-from typing import NewType
-
 from msAI.errors import MetadataVerifyError, MetadataIndexError, MetadataInitError
+from msAI.types import Series, DF, MetaDF
 from msAI.miscUtils import Saver
 from msAI.miscDecos import log_timer
 
@@ -30,15 +29,6 @@ import pandas as pd
 
 logger: logging.Logger = logging.getLogger(__name__)
 """Module logger configured with this module's name."""
-
-DF = pd.DataFrame
-"""Type alias of a pandas DataFrame."""
-
-Series = pd.Series
-"""Type alias of a Pandas Series."""
-
-MetaDF: NewType = NewType("MetaDF",  DF)
-"""Type derived from DF for use with metadata."""
 
 
 class SampleMetadata:
@@ -63,13 +53,13 @@ class SampleMetadata:
     file_path: str
     """A string representation of the path to the metadata file."""
 
-    _hf: pd.DataFrame
+    _hf: DF
     """High fidelity copy of imported data.
     
     Leave this original data untouched for future reference if needed.
     """
 
-    df: DF
+    df: MetaDF
     """The metadata dataframe."""
 
     @log_timer
