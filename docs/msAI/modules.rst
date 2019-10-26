@@ -11,4 +11,5 @@ msAI Modules
    samples
    miscUtils
    miscDecos
+   types
    errors

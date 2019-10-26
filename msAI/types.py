@@ -17,7 +17,7 @@ Series = pd.Series
 """Type alias of a Pandas Series."""
 
 DF = pd.DataFrame
-"""Type alias of a pandas DataFrame."""
+"""Type alias of a Pandas DataFrame."""
 
-MetaDF: NewType = NewType("MetaDF",  DF)
-"""Type derived from DF for use with metadata."""
+MetaDF: NewType = NewType("MetaDF", DF)
+"""Type derived from `DF` for use with metadata."""

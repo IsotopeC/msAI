@@ -102,3 +102,7 @@ typehints_fully_qualified = False           # Set false to just display class na
 always_document_param_types = True          # Set true to add stub documentation for undocumented parameters
 typehints_document_rtype = True             # Set false to never add an :rtype: directive
 
+
+# View code ext configuration
+# --------------------------------------------------------------------------------
+viewcode_follow_imported_members = False
