@@ -31,11 +31,11 @@ import pandas as pd
 logger: logging.Logger = logging.getLogger(__name__)
 """Module logger configured with this module's name."""
 
-DF: NewType = NewType("DF",  pd.DataFrame)
-"""Type derived from Pandas DataFrame."""
+DF = pd.DataFrame
+"""Type alias of a pandas DataFrame."""
 
-Series: NewType = NewType("Series",  pd.Series)
-"""Type derived from Pandas Series."""
+Series = pd.Series
+"""Type alias of a Pandas Series."""
 
 MetaDF: NewType = NewType("MetaDF",  DF)
 """Type derived from DF for use with metadata."""
