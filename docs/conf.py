@@ -70,16 +70,15 @@ autodoc_default_options = {
     'undoc-members': True,
     # 'exclude-members': '__weakref__',
     'private-members': True,
-    # 'inherited-members': True,
+    'inherited-members': True,
     'imported-members': False,
-    'show-inheritance': True,
+    'show-inheritance': True
 }
 
 # Set if class init method is included/concatenated to main
 autoclass_content = "class"
 # autoclass_content = "both"
 
-autodoc_inherit_docstrings = True
 
 # Napoleon ext configuration
 # --------------------------------------------------------------------------------
