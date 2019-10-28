@@ -1,5 +1,5 @@
 
-"""Module for importing sample metadata into dataframes.
+"""msAI module for importing sample metadata into dataframes.
 
 Features provided include
     * Extraction of metadata from various file types

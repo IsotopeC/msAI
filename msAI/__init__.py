@@ -1,8 +1,7 @@
 
-"""
-msAI __init__
+"""msAI package initialization.
 
-msAI module initialization
+See README for introduction.
 
 """
 

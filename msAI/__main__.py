@@ -1,9 +1,7 @@
 
-"""
-msAI __main__
+"""msAI package main.
 
-msAI package main launch point for command line use
-    (Not yet implemented)
+Launch point for command line use (Not yet implemented).
 
 """
 
