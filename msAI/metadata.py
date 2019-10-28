@@ -28,7 +28,7 @@ import pandas as pd
 
 
 logger: logging.Logger = logging.getLogger(__name__)
-"""Module logger configured with this module's name."""
+"""Module logger."""
 
 
 class SampleMetadata:
@@ -41,13 +41,13 @@ class SampleMetadata:
     By default, metadata labels and values are analyzed and if possible, a new index is assigned from an existing column.
     This index is used by `.SampleSet` to match this metadata with corresponding MS data in `.MSfileSet`.
 
-    Requirements to auto index metadata imported into a dataframe:
-        * Dataframe has 1 or more rows
-        * Dataframe has 2 or more columns
-        * For one and only one column:
+        Requirements to auto index metadata imported into a dataframe:
+            * Dataframe has 1 or more rows
+            * Dataframe has 2 or more columns
+            * For one and only one column:
 
-            * All column values are unique
-            * All entries/rows have a value for this column
+                * All column values are unique
+                * All entries/rows have a value for this column
     """
 
     file_path: str

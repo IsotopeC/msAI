@@ -11,7 +11,7 @@ import pandas as pd
 
 
 logger: logging.Logger = logging.getLogger(__name__)
-"""Module logger configured with this module's name."""
+"""Module logger."""
 
 # Series = pd.Series
 # """Type alias of a Pandas Series."""

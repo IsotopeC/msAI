@@ -27,6 +27,7 @@ import pandas as pd
 
 
 logger = logging.getLogger(__name__)
+"""Module logger."""
 
 
 class SampleSet:

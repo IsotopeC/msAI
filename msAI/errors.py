@@ -8,6 +8,7 @@ import logging
 
 
 logger = logging.getLogger(__name__)
+"""Module logger."""
 
 
 class Error(Exception):

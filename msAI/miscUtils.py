@@ -7,6 +7,7 @@
 import msAI
 from msAI.errors import MiscUtilsError
 
+import logging
 import sys
 import os
 import platform
@@ -21,6 +22,10 @@ import pathlib
 
 import numpy as np
 import pandas as pd
+
+
+logger = logging.getLogger(__name__)
+"""Module logger."""
 
 
 class FileGrabber:

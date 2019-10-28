@@ -13,7 +13,8 @@ import time
 import pandas
 
 
-# logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+"""Module logger."""
 
 
 def log_timer(func):
