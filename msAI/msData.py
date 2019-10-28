@@ -1,14 +1,15 @@
 
-"""
-msData
+"""msAI module for importing mass spectrometry data into dataframes.
 
-* Extraction of data from MS files (mzML, TBD...)
-* Creation of in-memory data structures
+Features
+    * Extraction of data from MS files (mzML, TBD...)
+    * Creation of in-memory data structures for spectra / peaks values
+    * Building a set of MS data files
 
-Todos:
+Todo
     * Change MSfile to dataclass
     * Change properties to attributes
-    * Create types for dataframes
+    * Create types for peaks and spectra dataframes
 
 """
 
@@ -29,22 +30,22 @@ logger = logging.getLogger(__name__)
 
 
 class MSfile:
+    """Interface for accessing data from a MS file stored in various file types.
+
+    Subclass implementations override the init method to set values.
+
+    The 'peaks' and 'spectra' properties hold data as dataframes with the following structure:
+
+        Peaks
+            | **First Index Level:**  spec_id
+            | **Second Index Level:**  peak_number
+            | **Columns:**  rt,  mz,  i
+
+        Spectra
+            | **Index:**  spec_id
+            | **Columns:**  rt,  peak_count,  tic,  ms_lvl,  filters
     """
-    Interface for accessing data from a MS file stored in various file types
 
-    Subclass implementations override the init method to set values
-
-    The 'peaks' and 'spectra' properties hold data as dataframes with the following structure
-
-        Peaks:
-            First Index Level: spec_id
-            Second Index Level: peak_number
-            Columns: rt, mz, i
-
-        Spectra:
-            Index: spec_id
-            Columns: rt, peak_count, tic, ms_lvl, filters
-    """
     def __init__(self):
         self._run_id = None
         self._run_date = None
@@ -59,41 +60,37 @@ class MSfile:
 
     @property
     def run_id(self):
-        """
-        Get the sample's run ID as specified from its MS data file
-        """
+        """Get the sample's run ID as specified from its MS data file."""
+
         return self._run_id
 
     @property
     def run_date(self):
-        """
-        Get the date the sample was run as specified from its MS data file
-        """
+        """Get the date the sample was run as specified from its MS data file."""
+
         return self._run_date
 
     @property
     def ms_file_version(self):
-        """
-        Get the data format version in which the sample was originally saved as specified from its ms file
+        """Get the data format version in which the sample was originally saved as specified from its ms file.
 
-        Note: Currently this is only a mzML version number
+        Note: Currently, this is equivalent to mzML version number.
         """
+
         return self._ms_file_version
 
     @property
     def spectrum_count(self):
-        """
-        Get the number of MS spectra from a sample run
+        """Get the number of MS spectra from a sample run.
 
-        Calculated from the number of spectra imported, rather than from MS file metadata
+        This value is calculated from the number of spectra imported, rather than from MS file metadata.
         """
+
         return self._spectrum_count
 
     @property
     def peak_count(self):
-        """
-        Get the total number of MS peaks from all MS spectra in sample run
-        """
+        """Get the total number of MS peaks from all MS spectra in sample run."""
         return self._peak_count
 
     @property
@@ -101,34 +98,36 @@ class MSfile:
         """
         Get the total ion current sum of all spectra in sample run
         """
+
         return self._tic_sum
 
     @property
     def peaks(self):
-        """
-        Get a dataframe of all peaks in a MS file
+        """Get a dataframe of all peaks in a MS file.
 
-        First Index Level: spec_id
-        Second Index Level: peak_number
-        Columns: rt, mz, i
+        Dataframe structure
+            | **First Index Level:**  spec_id
+            | **Second Index Level:**  peak_number
+            | **Columns:**  rt,  mz,  i
         """
+
         return self._peaks
 
     @property
     def spectra(self):
-        """
-        Get a dataframe of all spectra in an MS file
+        """Get a dataframe of all spectra in an MS file.
 
-        Index: spec_id
-        Columns: rt, peak_count, tic, ms_lvl, filters
+        Dataframe structure
+            | **Index:**  spec_id
+            | **Columns:**  rt,  peak_count,  tic,  ms_lvl,  filters
         """
+
         return self._spectra
 
 
 class MZMLfile(MSfile):
-    """
-    Access MS data stored in an mzML file
-    """
+    """Access MS data stored in an mzML file."""
+
     def __init__(self, mzml_file_path):
         self._mzml_file_path = mzml_file_path
         self._run = pymzml.run.Reader(self._mzml_file_path)
@@ -149,13 +148,8 @@ class MZMLfile(MSfile):
         del self._run
 
     def _create_spectrum_peaks_df(self, spectrum):
-        """
-        Return a dataframe of all peaks for a single spectrum in an mzML file
+        """Create a dataframe of all the peaks for a single spectrum in an mzML file."""
 
-        First Index Level: spec_id
-        Second Index Level: peak_number
-        Columns: rt, mz, i
-        """
         mz_values = spectrum.mz.round(5)
         i_values = spectrum.i
         rt = spectrum.scan_time_in_minutes()
@@ -172,12 +166,8 @@ class MZMLfile(MSfile):
         return spectrum_peaks
 
     def _create_spectrum_df(self, spectrum):
-        """
-        Return a dataframe of all spectra in an mzML file
+        """Create a dataframe of all the spectra in an mzML file."""
 
-        Index: spec_id
-        Columns: rt, peak_count, tic, ms_lvl, filters
-        """
         rt = spectrum.scan_time_in_minutes()
         peak_count = len(spectrum.mz)
         tic = spectrum.TIC
@@ -195,13 +185,13 @@ class MZMLfile(MSfile):
         return spectrum_df
 
     def _create_dfs(self):
-        """
-        Create spectra and peaks dataframes for an mzML file
+        """Create spectra and peaks dataframes for an mzML file.
 
-        Sets:
-            self._peaks
-            self._spectra
+        This method sets the following properties:
+            * self._peaks
+            * self._spectra
         """
+
         peaks_df_list = []
         spectra_df_list = []
 
