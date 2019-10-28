@@ -1,7 +1,7 @@
 .. msAI documentation root index
 
 msAI's Documentation
-================================
+====================
 
 .. toctree::
    :maxdepth: 2

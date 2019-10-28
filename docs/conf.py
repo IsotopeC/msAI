@@ -1,5 +1,8 @@
 
-# Configuration file for the Sphinx documentation builder
+"""Sphinx documentation builder configuration for msAI.
+
+"""
+
 
 import os
 import sys
@@ -16,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # --------------------------------------------------------------------------------
 project = 'msAI'
 copyright = '2019'
-author = 'Calvin'
+author = 'Calvin Peters'
 
 # Full version, including alpha/beta/rc tags
 release = '1.1.1.dev0'
@@ -48,11 +51,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # html_theme = 'alabaster'
 html_theme = 'sphinx_rtd_theme'
 # html_theme = 'default'
-
-# Paths that contain custom static files (such as style sheets), relative to this directory
-#   These are copied after the builtin static files,
-#   so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
 
 
 # Default role
