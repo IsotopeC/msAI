@@ -9,6 +9,7 @@ Features
 Todo
     * Change MSfile to dataclass
     * Change properties to attributes
+    * Modify public / private
     * Create types for peaks and spectra dataframes
 
 """
@@ -121,7 +122,14 @@ class MSfile:
 class MZMLfile(MSfile):
     """Class to access MS data stored in an mzML file."""
 
-    def __init__(self, mzml_file_path):
+    def __init__(self,
+                 mzml_file_path: str):
+        """Initializes an instance of MZMLfile class.
+
+        Args:
+            mzml_file_path: A string representation of the path to the mzML data file.
+                Path can be relative or absolute.
+        """
         self._mzml_file_path = mzml_file_path
         self._run = pymzml.run.Reader(self._mzml_file_path)
 
@@ -216,10 +224,27 @@ class MSfileSet:
     """File extensions considered to be mzML files."""
 
     msAIr_exts: ClassVar[List[str]] = ['msAIr', 'msair', 'MSAIR']
-    """File exten sions considered to be msAIr files."""
+    """File extensions considered to be msAIr files."""
     
     @log_timer
-    def __init__(self, dir_path, data_type='all', recursive=True):
+    def __init__(self,
+                 dir_path: str,
+                 data_type: str = 'all',
+                 recursive: bool = True):
+        """Initializes an instance of MSfileSet class.
+
+        Args:
+            dir_path: A string representation of the path to the data directory.
+                Path can be relative or absolute.
+            data_type: (``'all'``, ``'mzML'``, ``'msAIr'``) The type of MS files to include in the set.
+                By default, all types are included.
+            recursive: A boolean indicating if files in subdirectories are included in the set.
+                Defaults to ``True``.
+
+        Raises:
+            MSfileSetInitError: For duplicated filenames.
+        """
+
         self._dir_path = dir_path
 
         if data_type == 'all':
@@ -267,10 +292,10 @@ class MSfileSet:
 
     @property
     def df(self):
-        """
-        Get a dataframe of MS files
+        """Get a dataframe of MS files.
 
-        Index: name (from filename)
-        Columns: type, size_MB, path
+        Dataframe structure
+            | **Index:**  name (from filename)
+            | **Columns:**  type,  size_MB,  path
         """
         return self._df
