@@ -1,5 +1,5 @@
 
-"""Miscellaneous decorator functions.
+"""Miscellaneous decorator functions used by msAI.
 
 """
 
@@ -11,6 +11,7 @@ import logging
 import time
 
 import pandas
+
 
 # logger = logging.getLogger(__name__)
 

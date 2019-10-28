@@ -1,8 +1,5 @@
 
-"""
-errors
-
-* Definition of msAI exceptions
+"""msAI exception hierarchy.
 
 """
 

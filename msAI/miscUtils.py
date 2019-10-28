@@ -1,8 +1,5 @@
 
-"""
-miscUtils
-
-* Miscellaneous utilities
+"""Miscellaneous utilities used by msAI.
 
 """
 
