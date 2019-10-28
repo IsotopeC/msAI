@@ -71,7 +71,7 @@ class SampleMetadata:
         Args:
             file_path: A string representation of the path to the metadata file.
                 Path can be relative or absolute.
-            auto_index (optional): A boolean indicating if the metadata should be automatically indexed.
+            auto_index: A boolean indicating if the metadata should be automatically indexed.
                 Default is True.
 
         Raises:
