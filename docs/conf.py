@@ -71,7 +71,7 @@ autodoc_default_options = {
     # 'exclude-members': '__weakref__',
     'private-members': True,
     # 'inherited-members': True,
-    # 'imported-members': True,
+    'imported-members': False,
     'show-inheritance': True,
 }
 
@@ -98,7 +98,7 @@ napoleon_use_rtype = True
 
 # Autodoc type hints ext configuration
 # --------------------------------------------------------------------------------
-set_type_checking_flag = True               # Set true to enable "expensive" typing imports
+set_type_checking_flag = False              # Set true to enable "expensive" typing imports
 typehints_fully_qualified = False           # Set false to just display class names
 always_document_param_types = True          # Set true to add stub documentation for undocumented parameters
 typehints_document_rtype = True             # Set false to never add an :rtype: directive
