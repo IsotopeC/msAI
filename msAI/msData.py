@@ -20,6 +20,7 @@ from msAI.miscDecos import log_timer
 
 import os
 import logging
+from typing import ClassVar, List
 
 import pandas as pd
 import pymzml
@@ -30,20 +31,11 @@ logger = logging.getLogger(__name__)
 
 
 class MSfile:
-    """Interface for accessing data from a MS file stored in various file types.
+    """Interface class for accessing data from a MS file stored in various file types.
 
-    Subclass implementations override the init method to set values.
-
-    The 'peaks' and 'spectra' properties hold data as dataframes with the following structure:
-
-        Peaks
-            | **First Index Level:**  spec_id
-            | **Second Index Level:**  peak_number
-            | **Columns:**  rt,  mz,  i
-
-        Spectra
-            | **Index:**  spec_id
-            | **Columns:**  rt,  peak_count,  tic,  ms_lvl,  filters
+    Subclass implementations provide support for the various file types
+    and override the init method to set values.
+    The `peaks` and `spectra` properties hold data structured in dataframes.
     """
 
     def __init__(self):
@@ -91,6 +83,7 @@ class MSfile:
     @property
     def peak_count(self):
         """Get the total number of MS peaks from all MS spectra in sample run."""
+
         return self._peak_count
 
     @property
@@ -126,7 +119,7 @@ class MSfile:
 
 
 class MZMLfile(MSfile):
-    """Access MS data stored in an mzML file."""
+    """Class to access MS data stored in an mzML file."""
 
     def __init__(self, mzml_file_path):
         self._mzml_file_path = mzml_file_path
@@ -148,7 +141,7 @@ class MZMLfile(MSfile):
         del self._run
 
     def _create_spectrum_peaks_df(self, spectrum):
-        """Create a dataframe of all the peaks for a single spectrum in an mzML file."""
+        """Creates a dataframe of all the peaks for a single spectrum in an mzML file."""
 
         mz_values = spectrum.mz.round(5)
         i_values = spectrum.i
@@ -166,7 +159,7 @@ class MZMLfile(MSfile):
         return spectrum_peaks
 
     def _create_spectrum_df(self, spectrum):
-        """Create a dataframe of all the spectra in an mzML file."""
+        """Creates a dataframe of all the spectra in an mzML file."""
 
         rt = spectrum.scan_time_in_minutes()
         peak_count = len(spectrum.mz)
@@ -185,7 +178,7 @@ class MZMLfile(MSfile):
         return spectrum_df
 
     def _create_dfs(self):
-        """Create spectra and peaks dataframes for an mzML file.
+        """Creates spectra and peaks dataframes for an mzML file.
 
         This method sets the following properties:
             * self._peaks
@@ -207,19 +200,23 @@ class MZMLfile(MSfile):
 
 
 class MSfileSet:
-    """
-    Create set of MS files created from a directory
-        This set can be viewed / manipulated as a dataframe
+    """Class to create a set of MS files from a data directory.
 
-    By default, contents of sub directories will be recursively included
-        However, an error is raised if included filenames are duplicated
+    Creating a set enables a large number of datafiles to be viewed / manipulated as a dataframe,
+    without loading their entire contents into memory.
 
-    Set can include any MSfile type (mzML, msAIr, or a mix)
-        By default, all datafiles matching these extensions will be used (type='all')
-        Exclusive type may be specified with type='mzML' or type='msAIr'
+    By default, contents of sub directories will be recursively included.
+    However, an error is raised if included filenames are duplicated.
+    A Set can include any MSfile type (mzML, msAIr, or a mix).
+    By default, any datafile matching these extensions will be included.
+    An exclusive type may alternatively be specified.
     """
-    mzML_exts = ['mzML', 'mzml', 'MZML']
-    msAIr_exts = ['msAIr', 'msair', 'MSAIR']
+
+    mzML_exts: ClassVar[List[str]] = ['mzML', 'mzml', 'MZML']
+    """File extensions considered to be mzML files."""
+
+    msAIr_exts: ClassVar[List[str]] = ['msAIr', 'msair', 'MSAIR']
+    """File exten sions considered to be msAIr files."""
     
     @log_timer
     def __init__(self, dir_path, data_type='all', recursive=True):
