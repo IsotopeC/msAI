@@ -1,6 +1,5 @@
 
-"""
-samples
+"""msAI module to create
 
 * Creation of a sample set from a directory of MS data files
 * Pairing of MS data and sample metadata
@@ -31,18 +30,18 @@ logger = logging.getLogger(__name__)
 
 
 class SampleSet:
-    """
-    A dataframe of a set of SampleRuns created from a MSfileSet and paired with 0 or more SampleMetadata
+    """Class to create a dataframe of a set of SampleRuns created from a MSfileSet and paired with 0 or more SampleMetadata.
 
-    SampleMetadata objects provide a dataframe with a matching index to MSfileSet
+    SampleMetadata objects provide a dataframe with a matching index to MSfileSet.
 
-    A dataframe is created from a set of MS data files (MSfileSet) and joined with matching SampleMetadata
-        By default (metadata_inner_merge=False), all files in the passed MSfileSet will be included- even if no matching metadata is found
-        Passing metadata_inner_merge=True, will only include MS files that have matching metadata for every SampleMetadata included
+    A dataframe is created from a set of MS data files (MSfileSet) and joined with matching SampleMetadata.
+    By default (metadata_inner_merge=False), all files in the passed MSfileSet will be included- even if no matching metadata is found.
+    Passing metadata_inner_merge=True, will only include MS files that have matching metadata for every SampleMetadata included.
 
     SampleRun objects are created for each MS file when the SampleSet is created,
-        but MS data is not initialized until called
+    but MS data is not initialized until called.
     """
+
     @log_timer
     def __init__(self, ms_file_set, *sample_metadata, metadata_inner_merge=False, init_ms=False):
         self._ms_file_set = ms_file_set
@@ -216,13 +215,13 @@ class SampleSet:
 
 
 class SampleRun:
-    """
-    Data from a MS analysis run of a sample
+    """Class to hold data from a MS analysis run of a sample.
 
-    Data is extracted from a supported MS file type (currently only mzML) or loaded from a previous msAIr save
-        File type is determined by file extension (.mzML or .msAIr)
-    A sha256 hash may be provided for a .msAIr file which will be verified during init_ms()
+    Data is extracted from a supported MS file type (currently only mzML) or loaded from a previous msAIr save.
+    File type is determined by file extension (.mzML or .msAIr).
+    A sha256 hash may be provided for a .msAIr file which will be verified during init_ms().
     """
+
     def __init__(self, file_path):
         self.file_path = file_path
 
