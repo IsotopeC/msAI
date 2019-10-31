@@ -1,8 +1,5 @@
 
-"""
-errors
-
-* Definition of msAI exceptions
+"""msAI exception hierarchy.
 
 """
 
@@ -11,27 +8,32 @@ import logging
 
 
 logger = logging.getLogger(__name__)
+"""Module logger."""
 
 
-class Error(Exception):
-    """
-    Base class for exceptions in this module
-    """
+class msAIerror(Exception):
+    """Base class for exceptions in the msAI package."""
+
     pass
 
 
-class RootError(Error):
-    """
-    Exceptions raised for errors in msAI package __init__
+class RootError(msAIerror):
+    """Exceptions raised for errors in msAI package __init__."""
 
-    Attributes:
-        message -- explanation of the error
-    """
-    def __init__(self, message):
-        self.message = message
+    message: str
+    """Explanation of the cause of this error."""
+
+    def __init__(self, message: str):
+        """Initializes an instance of RootError.
+
+        Args:
+            message: Explanation of the cause of this error.
+        """
+
+        self.message: str = message
 
 
-class MiscUtilsError(Error):
+class MiscUtilsError(msAIerror):
     """
     Exceptions raised for errors in miscUtils
 
@@ -42,7 +44,7 @@ class MiscUtilsError(Error):
         self.message = message
 
 
-class MetadataError(Error):
+class MetadataError(msAIerror):
     """
     Exceptions raised for errors in metadata
 
@@ -86,7 +88,7 @@ class MetadataIndexError(MetadataError):
         self.message = message
 
 
-class SampleRunError(Error):
+class SampleRunError(msAIerror):
     """
     Exceptions raised for errors in SampleRun
 
@@ -108,7 +110,7 @@ class SampleRunMSinitError(SampleRunError):
         self.message = message
 
 
-class MSdataError(Error):
+class MSdataError(msAIerror):
     """
     Exceptions raised for errors in msData
 

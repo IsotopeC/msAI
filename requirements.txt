@@ -40,5 +40,6 @@ coverage
 
 # Docs
 #------------------------------------------------
-sphinx==2.2.0
+sphinx==2.2.1
 sphinx_rtd_theme
+sphinx-autodoc-typehints
