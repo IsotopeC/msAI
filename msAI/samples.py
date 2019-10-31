@@ -6,7 +6,7 @@
 * Extraction of sample metadata from csv files
 * Saving / loading data (serialization, compression, checksum)
 
-Todos
+Todo
     * init_ms mp logging calls
 
 """
