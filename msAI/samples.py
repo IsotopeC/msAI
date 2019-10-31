@@ -1,10 +1,11 @@
 
-"""msAI module to create
+"""msAI module to create a unified set of MS data samples paired with any additional metadata.
 
-* Creation of a sample set from a directory of MS data files
-* Pairing of MS data and sample metadata
-* Extraction of sample metadata from csv files
-* Saving / loading data (serialization, compression, checksum)
+Features
+    * Creation of a sample set from a directory of MS data files
+    * Pairing of MS data and sample metadata
+    * Extraction of sample metadata from csv files
+    * Saving / loading data (serialization, compression, checksum)
 
 Todo
     * init_ms mp logging calls
@@ -71,11 +72,11 @@ class SampleSet:
 
     @staticmethod
     def _set_run_metadata(sample_name, run, metadata):
-        """
-        Add metadata to SampleRuns, if possible
+        """Adds metadata to SampleRuns, if possible.
 
-        Samples with missing metadata are logged
+        Samples with missing metadata are logged.
         """
+
         try:
             run._metadata = pd.concat([run._metadata, metadata.df.loc[sample_name]])
 
@@ -85,11 +86,11 @@ class SampleSet:
             logger.warning(f"Missing metadata from: {file}, for MS file: {sample_name}")
 
     def _create_sampleruns(self):
-        """
-        Create of SampleRuns for all samples in the SampleSet
+        """Creates of SampleRuns for all samples in the SampleSet.
 
-        Multi or single process according to MP_SUPPORT
+        Multi or single process according to MP_SUPPORT.
         """
+
         if msAI.MP_SUPPORT:
             self._create_sampleruns_mp()
         else:
@@ -97,115 +98,106 @@ class SampleSet:
 
     @log_timer
     def _create_sampleruns_sp(self):
-        """
-        Single-process creation of SampleRuns for all samples in the SampleSet
-        """
+        """Single-process creation of SampleRuns for all samples in the SampleSet."""
+
         self._df['run'] = self._df.apply(lambda row: SampleRun(row['path']), axis=1)
 
     @staticmethod
     def _create_samplerun_mpf(row):
-        """
-        Multiprocessing function to create a single SampleRun for a row/sample in the SampleSet
-        """
+        """Multiprocessing function to create a single SampleRun for a row/sample in the SampleSet."""
+
         row['run'] = SampleRun(row['path'])
         return row
 
     @log_timer
     def _create_sampleruns_mp(self):
-        """
-        Multiprocess creation of SampleRuns for all samples in the SampleSet
-        """
+        """Multiprocess creation of SampleRuns for all samples in the SampleSet."""
+
         self._df = MultiTaskDF.parallelize_on_rows(self._df, self._create_samplerun_mpf)
 
     @log_timer
     def _init_all_ms_sp(self):
-        """
-        Single-process initialization of MS data for all samples in the SampleSet
-        """
+        """Single-process initialization of MS data for all samples in the SampleSet."""
+
         self._df['run'].apply(SampleRun.init_ms)
 
     @staticmethod
     def _init_ms_mpf(row):
-        """
-        Multiprocessing function to initialize the MS data of a single SampleRun (a row of a SampleSet)
-        """
+        """Multiprocessing function to initialize the MS data of a single SampleRun (a row of a SampleSet)."""
+
         row['run'].init_ms()
         return row
 
     @log_timer
     def _init_all_ms_mp(self):
-        """
-        Multiprocess initialization of MS data for all samples in the SampleSet
-        """
+        """Multiprocess initialization of MS data for all samples in the SampleSet."""
+
         self._df = MultiTaskDF.parallelize_on_rows(self._df, self._init_ms_mpf)
 
     @log_timer
     def _save_all_ms_sp(self, dir_path):
-        """
-        Single-process save of MS data for all samples in the SampleSet
-        """
+        """Single-process save of MS data for all samples in the SampleSet."""
+
         self._df['msAIr_hash'] = self._df.apply(lambda row: row['run'].save(dir_path, row.name), axis=1)
 
     @staticmethod
     def _save_ms_mpf(dir_path, row):
-        """
-        Multiprocessing function to save the MS data of a single SampleRun (a row of a SampleSet)
-        """
+        """Multiprocessing function to save the MS data of a single SampleRun (a row of a SampleSet)."""
+
         row['msAIr_hash'] = row['run'].save(dir_path, row.name)
         return row
 
     @log_timer
     def _save_all_ms_mp(self, dir_path):
-        """
-        Multiprocess save of MS data for all samples in the SampleSet
-        """
+        """Multiprocess save of MS data for all samples in the SampleSet."""
+
         self._df = MultiTaskDF.parallelize_on_rows(self._df, partial(self._save_ms_mpf, dir_path))
 
     @property
     def df(self):
-        """
-        Get a dataframe of sample runs paired with sample metadata
+        """Get a dataframe of sample runs paired with sample metadata.
 
         Index: name (from filename)
         Columns: type, size_MB, path, (metadata...), run (python object)
         """
+
         return self._df
 
     def init_all_ms(self):
-        """
-        Initialize MS data for all samples in the SampleSet
+        """Initializes MS data for all samples in the SampleSet.
 
-        Multi or single process according to MP_SUPPORT
+        Multi or single process according to MP_SUPPORT.
         """
+
         if msAI.MP_SUPPORT:
             self._init_all_ms_mp()
         else:
             self._init_all_ms_sp()
 
     def save_all_ms(self, dir_path):
-        """
-        Save MS data for all samples in the set as .msAIr files (in dir_path) and add hash value to metadata (msAIr_hash)
+        """Saves MS data for all samples in the set as .msAIr files (in dir_path) and add hash value to metadata (msAIr_hash).
 
-        Multi or single process according to MP_SUPPORT
+        Multi or single process according to MP_SUPPORT.
         """
+
         if msAI.MP_SUPPORT:
             self._save_all_ms_mp(dir_path)
         else:
             self._save_all_ms_sp(dir_path)
 
     def save_metadata(self, dir_path, filename):
-        """
-        Save all metadata for a SampleSet as a .msAIm file
+        """Saves all metadata for a SampleSet as a .msAIm file.
 
         This enables faster loading when recreating a sample set,
-        and verification of msAIr_hash values
+        and verification of msAIr_hash values.
 
-        Contents will include all metadata passed at SampleSet creation + msAIr hash values (if created)
-            MSfile data and SampleRuns are not included, as data paths may change
+        Contents will include all metadata passed at SampleSet creation + msAIr hash values (if created).
+        MSfile data and SampleRuns are not included, as data paths may change.
 
-        Data is serialized with pickle and compressed via bzip2
-        A sha256 hash is returned
+        Data is serialized with pickle and compressed via bzip2.
+        A sha256 hash is returned.
         """
+
         metadata = self._df.drop(columns=['file_type', 'file_size', 'path', 'run'])
 
         full_filename = (dir_path + "/" + filename + ".msAIm")
@@ -230,50 +222,48 @@ class SampleRun:
 
     @property
     def ms(self):
-        """
-        Access to MS data of a sample run
-        """
+        """Access to MS data of a sample run."""
+
         return self._ms
 
     @property
     def metadata(self):
-        """
-        Access to sample metadata
-        """
+        """Access to sample metadata."""
+
         return self._metadata
 
     @property
     def msAIr_hash(self):
-        """
-        Hash value of the SampleRun
+        """Hash value of the SampleRun.
 
         This value was generated when the SampleRun was saved,
-        and re-associated from SampleSet metadata
+        and re-associated from SampleSet metadata.
         """
+
         if hasattr(self._metadata, 'msAIr_hash'):
             return self._metadata.msAIr_hash
         else:
             return None
 
     def save(self, dir_path, filename):
-        """
-        Save a SampleRun ms data as a msAIr file for fast loading later
+        """Save a SampleRun ms data as a msAIr file for fast loading later.
 
-        Data is serialized with pickle and compressed via bzip2
-        A sha256 hash is returned
+        Data is serialized with pickle and compressed via bzip2.
+        A sha256 hash is returned.
         """
+
         full_filename = (dir_path + "/" + filename + ".msAIr")
         msAIr_hash = Saver.save_obj(self._ms, full_filename)
 
         return msAIr_hash
 
     def init_ms(self):
-        """
-        Initialize MS data at the SampleRun's set file_path from a .mzML or .msAIr file
+        """Initialize MS data at the SampleRun's set file_path from a .mzML or .msAIr file.
 
-        For a .msAIr file, it is first tested against a sha256 hash, if provided
-            Data is decompressed via bzip2 and deserialized with pickle
+        For a .msAIr file, it is first tested against a sha256 hash, if provided.
+        Data is decompressed via bzip2 and deserialized with pickle.
         """
+
         name, ext = os.path.splitext(self.file_path)
 
         if ext.casefold() == '.mzml':
