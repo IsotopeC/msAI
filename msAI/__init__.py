@@ -19,32 +19,32 @@ name = "msAI"
 
 
 def set_logging(mode):
-    """
-    Configures msAI logging for development,release, library, or silent use
+    """Configures msAI logging for development, release, library, or silent use.
 
     Set mode parameter to 'dev', 'release', 'lib', or 'none'
 
         dev mode:
-            Logging exceptions will be raised
-            Messages of severity INFO and higher are displayed on console
-            Messages of severity DEBUG and higher are saved to the log file
-            Log file is overwritten each run
+            * Logging exceptions will be raised
+            * Messages of severity INFO and higher are displayed on console
+            * Messages of severity DEBUG and higher are saved to the log file
+            * Log file is overwritten each run
 
         release mode:
-            Logging exceptions will NOT be raised
-            Messages of severity WARNING and higher are displayed on console
-            Messages of severity INFO and higher are saved to the log file
-            All log files are saved for each run - named with date/time
+            * Logging exceptions will NOT be raised
+            * Messages of severity WARNING and higher are displayed on console
+            * Messages of severity INFO and higher are saved to the log file
+            * All log files are saved for each run - named with date/time
 
         lib mode:
-            Logging exceptions will NOT be raised
-            Log handlers are left unconfigured
-                Python default will write messages or severity WARNING or higher to console
+            * Logging exceptions will NOT be raised
+            * Log handlers are left unconfigured
+              Python default will write messages or severity WARNING or higher to console
 
         none mode:
-            Logging exceptions will NOT be raised
-            Root logger will use NullHandler to prevent messages from being displayed
+            * Logging exceptions will NOT be raised
+            * Root logger will use NullHandler to prevent messages from being displayed
     """
+
     # Module names are used as logger names- thus submodules are automatically child loggers
     root_logger = logging.getLogger(__name__)
 
@@ -103,19 +103,19 @@ def set_logging(mode):
 
 
 def set_mp_support(mode='auto', workers='auto'):
-    """
-    Configure msAI multiprocessing
+    """Configures msAI multiprocessing.
 
-    The package variable MP_SUPPORT is a boolean set to enable / disable multiprocessing use package wide
-        This is necessary as certain operations will fail if the multiprocessing module uses the 'spawn' start method
-        The start method default is determined by OS type
+    The package variable MP_SUPPORT is a boolean set to enable / disable multiprocessing use package wide.
+    This is necessary as certain operations will fail if the multiprocessing module uses the 'spawn' start method.
+    The start method default is determined by OS type.
 
-    Set mode parameter to 'auto', 'disabled', 'enabled'
-        'auto' mode will set MP_SUPPORT to True if the multiprocessing start method used is 'fork'
+    Set mode parameter to 'auto', 'disabled', 'enabled'.
+    'auto' mode will set MP_SUPPORT to True if the multiprocessing start method used is 'fork'.
 
     Set workers parameter to the number of worker processes to use
-        'auto' will set number to CPU count
+    'auto' will set number to CPU count.
     """
+
     if EnvInfo.mp_method() == 'fork':
         os_mp_support = True
     else:
