@@ -29,21 +29,21 @@ logger = logging.getLogger(__name__)
 
 
 class FileGrabber:
-    """
-    Functions to grab files
-    """
+    """Functions to grab files."""
+
     @staticmethod
     def multi_extensions(directory, *extensions, recursive=True):
+        """Returns an iterator of path objects to all files in a directory matching the passed extensions.
+
+        Extensions are specified without leading ``.``.
+        Use str(path_obj) to get the platform independent path string.
+        Subdirectories will be recursively searched by default.
+
+        Note:
+            While Windows paths are case insensitve, Posix paths are case sensitive.
+            Thus the set of casefolded extensions will be used on Windows systems.
         """
-        Get an iterator of path objects to all files in a directory matching the passed extensions (specified without leading '.')
 
-        Use str(path_obj) to get the platform independent path string
-
-        Subdirectories will be recursively searched by default
-
-        Note: While Windows paths are case insensitve, Posix paths are case sensitive
-            Thus the set of casefolded extensions will be used on Windows systems
-        """
         dir_path = pathlib.Path(directory)
         path_type = FileGrabber.path_type(directory)
 
@@ -63,15 +63,15 @@ class FileGrabber:
 
     @staticmethod
     def path_type(directory='.'):
-        """
-        Get the path type of a directory
+        """Get the path type of a directory.
 
-        Will return a string of either 'posix' or 'windows'
-        Path type is identified by the class of Path object created
+        Returns a string of either 'posix' or 'windows'.
+        Path type is identified by the class of Path object created.
 
-        This test is used for determining what glob patterns to apply based on path case sensitivity
-            Windows paths are case insensitve, while Posix paths are case sensitive
+        This test is used for determining what glob patterns to apply based on path case sensitivity.
+        Windows paths are case insensitve, while Posix paths are case sensitive.
         """
+
         path = pathlib.Path(directory)
 
         if isinstance(path, pathlib.PosixPath):
@@ -85,55 +85,48 @@ class FileGrabber:
 
 
 class Sizer:
-    """
-    Functions to get data size
-    """
+    """Functions to measure data size."""
+
     @staticmethod
     def obj_mb(obj):
-        """
-        Return the size of a python object in MBs
-        """
+        """Returns the size of a python object in MBs."""
+
         obj_size_mb = (sys.getsizeof(obj) * 0.000001)
         return obj_size_mb
 
     @staticmethod
     def print_obj_mb(obj):
-        """
-        Print the size of a python object in MBs
-        """
+        """Prints the size of a python object in MBs."""
+
         obj_size_mb = Sizer.obj_mb(obj)
         print(f"objSizeMB: {obj_size_mb:.4f}")
 
     @staticmethod
     def file_mb(file):
-        """
-        Return the size of a file in MBs
-        """
+        """Returns the size of a file in MBs."""
+
         obj_size_mb = (os.path.getsize(file) * 0.000001)
         return obj_size_mb
 
     @staticmethod
     def print_file_mb(file):
-        """
-        Print the size of a file in MBs, to 4 decimals
-        """
+        """Prints the size of a file in MBs, to 4 decimals."""
+
         file_size_mb = Sizer.file_mb(file)
         print(f"fileSizeMB: {file_size_mb:.4f}")
 
 
 class Saver:
-    """
-    Functions to save / load, serialize, and compress files and objects
-    """
+    """Functions to save / load, serialize, and compress files and objects."""
 
     @staticmethod
     def save_obj(obj, file):
-        """
-        Save a python object to the path/filename given
+        """Saves a python object to the path/filename given.
 
-        Data is serialized with pickle and compressed via bzip2
-        A sha256 hash is returned
+        Data is serialized with pickle and compressed via bzip2.
+        A sha256 hash is returned.
         """
+
         file_path = pathlib.Path(file)
         with bz2.open(file_path, "wb") as save_file:
             pickle.dump(obj, save_file, pickle.HIGHEST_PROTOCOL)
@@ -142,9 +135,8 @@ class Saver:
 
     @staticmethod
     def get_hash(file):
-        """
-        Calculate the sha256 hash of a file
-        """
+        """Calculate the sha256 hash of a file."""
+
         # The size of each read from the file
         BLOCK_SIZE = 65536
 
@@ -161,9 +153,8 @@ class Saver:
 
     @staticmethod
     def verify_hash(file, test_hash):
-        """
-        Verify the sha256 hash of a file
-        """
+        """Verifies the sha256 hash of a file."""
+
         calc_hash = Saver.get_hash(file)
 
         if calc_hash == test_hash:
@@ -173,14 +164,14 @@ class Saver:
 
     @staticmethod
     def load_obj(file, check_hash=None):
-        """
-        Load a previously saved object at the given path/filename
+        """Loads a previously saved object at the given path/filename.
 
-        The file will be tested against a sha256 hash, if provided
-        Data is decompressed via bzip2 and deserialized with pickle
+        The file will be tested against a sha256 hash, if provided.
+        Data is decompressed via bzip2 and deserialized with pickle.
 
-        The object is returned along with results of verify_hash, or none if no hash is present
+        The object is returned along with results of verify_hash, or none if no hash is present.
         """
+
         if check_hash is not None:
             if Saver.verify_hash(file, check_hash):
                 hash_verified = True
@@ -196,19 +187,20 @@ class Saver:
 
 
 class MultiTaskDF:
-    """
-    Use multiprocessing to parallelize a function applied to all rows in a dataframe
-    """
+    """Use multiprocessing to parallelize a function applied to all rows in a dataframe."""
+
     @staticmethod
     def _parallelize(df_in, func):
-        """
-        Split a dataframe into a number of subsets equal to cpu count,
-        and create a process pool with a number of workers equal to cpu count,
-        and use each worker to apply a function to a dataframe subset
+        """Partition a dataframe and assign a pool of workers to apply a function to each part.
 
-        func is received as a partial object, and its call input is completed with
-        a dataframe subset after the dataframe is split
+        Splits a dataframe into a number of subsets equal to cpu count,
+        and creates a process pool with a number of workers equal to cpu count,
+        and use each worker to apply a function to a dataframe subset.
+
+        ``func`` is received as a partial object, and its call input is completed with
+        a dataframe subset after the dataframe is split.
         """
+
         worker_count = msAI.WORKER_COUNT
         df_split = np.array_split(df_in, worker_count)
         pool = Pool(worker_count)
@@ -220,28 +212,24 @@ class MultiTaskDF:
 
     @staticmethod
     def _run_on_subset(func, df_subset):
-        """
-        Apply function to a dataframe subset
-        """
+        """Applies a function to a dataframe subset."""
+
         return df_subset.apply(func, axis=1)
 
     @staticmethod
     def parallelize_on_rows(df, func):
-        """
-        Parallelize a function applied to all rows in a dataframe
-        """
+        """Parallelizes a function applied to all rows in a dataframe."""
+
         return MultiTaskDF._parallelize(df, partial(MultiTaskDF._run_on_subset, func))
 
 
 class EnvInfo:
-    """
-    Functions to get info about the environment running python
-    """
+    """Functions to get info about the environment running python."""
+
     @staticmethod
     def platform():
-        """
-        Get a string (multiline) describing the platform in use
-        """
+        """Get a string (multiline) describing the platform in use."""
+
         return (f"Platform: {sys.platform}\n"
                 f"Full Platform: {platform.platform()}\n"
                 f"Machine Type: {platform.machine()}\n"
@@ -249,13 +237,11 @@ class EnvInfo:
 
     @staticmethod
     def os():
-        """
-        Get a string (multiline) describing the operating system in use
-        """
+        """Get a string (multiline) describing the operating system in use."""
+
         def env_item_gen():
-            """
-            Generator to iterate over key-value pairs of environment variables
-            """
+            """Generator to iterate over key-value pairs of environment variables."""
+
             for key, value in os.environ.items():
                 yield (f"{key}: {value}")
 
@@ -266,9 +252,8 @@ class EnvInfo:
 
     @staticmethod
     def python():
-        """
-        Get a string (multiline) describing the python interpreter in use
-        """
+        """Get a string (multiline) describing the python interpreter in use."""
+
         return (f"Python Version: {platform.python_version()}\n"
                 f"Python Implementation: {platform.python_implementation()}\n"
                 f"Interpreter Compiler: {platform.python_compiler()}\n"
@@ -278,21 +263,20 @@ class EnvInfo:
 
     @staticmethod
     def all():
-        """
-        Get a string (multiline) describing the environment running python
-        """
+        """Get a string (multiline) describing the environment running python."""
+
         return os.linesep.join([EnvInfo.platform(), EnvInfo.os(), EnvInfo.python()])
 
     @staticmethod
     def mp_method():
-        """
-        Get a string describing the start method used by the multiprocessing module to create new processes
+        """Get a string describing the start method used by the multiprocessing module to create new processes.
 
         Defaults are set according to OS type:
-            POSIX = 'fork'
-            Windows = 'spawn'
+            | POSIX = 'fork'
+            | Windows = 'spawn'
 
-        Use this function to test and switch to single processing if necessary
-            As certain functions will fail under the spawn start method
+        Use this function to test and switch to single processing if necessary.
+        Certain functions will fail under the spawn start method.
         """
+
         return multiprocessing.get_start_method()
