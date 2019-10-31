@@ -1,5 +1,11 @@
 
+"""msAI build script for setuptools.
+
+"""
+
+
 import setuptools
+
 
 with open("README.rst", "r") as readme_file:
     readme_description = readme_file.read()
@@ -26,4 +32,3 @@ setuptools.setup(
     install_requires=['numpy', 'pandas', 'tensorflow', 'pymzml'],
     python_requires='>3.6'
 )
-

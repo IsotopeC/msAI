@@ -14,37 +14,37 @@ Overview
 
 *msAI provides a library of python modules for...*
 
-* Extracting data from mass spectrometry data files
+    * Extracting data from mass spectrometry data files
 
-    * Supported MS file types: mzML, TBD…
+        * Supported MS file types: mzML, TBD…
 
-* Importing sample metadata
+    * Importing sample metadata
 
-    * Unify MS data and sample metadata in a single view
+        * Unify MS data and sample metadata in a single view
 
-* Partitioning data for training, testing, and validation
+    * Partitioning data for training, testing, and validation
 
-* Quality analysis of MS runs / samples
+    * Quality analysis of MS runs / samples
 
-    * Metadata verification
-    * Anomaly detection
+        * Metadata verification
+        * Anomaly detection
 
-* Plotting / visualization
+    * Plotting / visualization
 
-* AI / machine learning frameworks
+    * AI / machine learning frameworks
 
-    * TensorFlow
-    * TBD…
+        * TensorFlow
+        * TBD…
 
-* Creating AI models
+    * Creating AI models
 
-    * Neural network architectures - neuron layers, connections, activation functions
-    * Model training - loss and optimization functions, hyperparameter tuning
-    * Evaluation of models - measure accuracy, prevent overfitting
+        * Neural network architectures - neuron layers, connections, activation functions
+        * Model training - loss and optimization functions, hyperparameter tuning
+        * Evaluation of models - measure accuracy, prevent overfitting
 
-* Model lifecycle management
+    * Model lifecycle management
 
-    * Deploy, update, backup, restore
+        * Deploy, update, backup, restore
 
 
 ************
@@ -60,5 +60,5 @@ Install from the Python Package Index (PyPI)::
 Documentation
 *************
 
-*Section in progress*
+https://msai.readthedocs.io
 

@@ -1,9 +1,9 @@
 
-"""
-msAI __main__
+"""msAI package main.
 
-msAI package main launch point for command line use
-    (Not yet implemented)
+Future launch point for command line use.
+
+See README for introduction.
 
 """
 
@@ -14,6 +14,7 @@ import logging
 
 
 logger = logging.getLogger('msAI')
+"""Module logger."""
 
 
 def main():

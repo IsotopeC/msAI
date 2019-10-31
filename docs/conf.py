@@ -1,5 +1,8 @@
 
-# Configuration file for the Sphinx documentation builder
+"""Sphinx documentation builder configuration for msAI.
+
+"""
+
 
 import os
 import sys
@@ -16,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # --------------------------------------------------------------------------------
 project = 'msAI'
 copyright = '2019'
-author = 'Calvin'
+author = 'Calvin Peters'
 
 # Full version, including alpha/beta/rc tags
 release = '1.1.1.dev0'
@@ -28,8 +31,10 @@ master_doc = 'index'
 # General configuration
 # --------------------------------------------------------------------------------
 # Sphinx / custom extension modules
-# extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
-extensions = ['sphinx.ext.napoleon']
+# extensions = ['sphinx.ext.autodoc']
+extensions = ['sphinx.ext.napoleon',
+              'sphinx_autodoc_typehints',
+              'sphinx.ext.viewcode']
 
 # Paths that contain templates, relative to this directory
 templates_path = ['_templates']
@@ -47,34 +52,33 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'sphinx_rtd_theme'
 # html_theme = 'default'
 
-# Paths that contain custom static files (such as style sheets), relative to this directory
-#   These are copied after the builtin static files,
-#   so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+
+# Default role
+# --------------------------------------------------------------------------------
+# reST role to use as the default role, that is, for text marked up `like this`
+default_role = 'py:obj'
 
 
 # Autodoc configuration
 # --------------------------------------------------------------------------------
 # Default options for all autodoc directives
-autodoc_default_options = {
-    'member-order': 'bysource',
-    'special-members': "__init__ __repr__",
-    'undoc-members': True,
-    # 'exclude-members': '__weakref__',
-    'private-members': True,
-    # 'inherited-members': True,
-    # 'imported-members': True,
-    'show-inheritance': True,
-}
+autodoc_default_options = {'member-order': 'bysource',
+                           'special-members': '__init__',
+                           'undoc-members': True,
+                           'private-members': True,
+                           'inherited-members': True,
+                           'show-inheritance': True}
+
+# Set if class init method is included/concatenated to main
+# autoclass_content = "both"
 
 
-# Napoleon configuration
+# Napoleon ext configuration
 # --------------------------------------------------------------------------------
-# * signifies changed from default
 napoleon_google_docstring = True
-napoleon_numpy_docstring = False                # *
-napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = False
+napoleon_numpy_docstring = False
+napoleon_include_init_with_doc = True
+napoleon_include_private_with_doc = True
 napoleon_include_special_with_doc = True
 napoleon_use_admonition_for_examples = False
 napoleon_use_admonition_for_notes = False
@@ -82,3 +86,16 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+
+# Autodoc type hints ext configuration
+# --------------------------------------------------------------------------------
+set_type_checking_flag = True               # Set true to enable "expensive" typing imports
+typehints_fully_qualified = False           # Set false to just display class names
+always_document_param_types = False         # Set true to add stub documentation for undocumented parameters
+typehints_document_rtype = True             # Set false to never add an :rtype: directive
+
+
+# View code ext configuration
+# --------------------------------------------------------------------------------
+viewcode_follow_imported_members = False
