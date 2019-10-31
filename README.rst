@@ -60,5 +60,5 @@ Install from the Python Package Index (PyPI)::
 Documentation
 *************
 
-*Section in progress*
+msai.readthedocs.io
 
