@@ -9,6 +9,7 @@ Features
 
 Todo
     * init_ms mp logging calls
+    * Create a msFile subclass form msAIr files - and move loading to that class
 
 """
 
