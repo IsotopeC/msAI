@@ -9,7 +9,7 @@ msAI's Documentation
 
    introduction
    examples
-   msAI/modules
+   modules
    development
 
 
