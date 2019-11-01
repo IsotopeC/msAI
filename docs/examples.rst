@@ -3,7 +3,8 @@
 Examples
 ###########
 
-Example msAI usage
+.. toctree::
+   :maxdepth: 2
 
 
 *******
