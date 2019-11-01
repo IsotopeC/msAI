@@ -7,4 +7,4 @@ Examples
    :maxdepth: 2
 
    examples/basics
-   examples/sampleSet
+   examples/sampleSets
