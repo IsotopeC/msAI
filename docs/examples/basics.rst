@@ -163,22 +163,48 @@ Sample metadata
 
 Additional sample metadata can be imported and associated with MS data.
 
-from a CSV file and attempt to set an index
-#   * Contents initially imported into a dataframe with a numerical index
-#   * Metadata labels and values are analyzed and a new index is assigned, if possible
-#   * This index is used to match metadata with sample file
+Define the path to he metadata file.
 
-csv_path = "./examples/data/metadata/coneflower_metadata.csv"
+>>> csv_path = "./examples/data/metadata/coneflower_metadata.csv"
 
-cone_flower_metadata = SampleMetadata(csv_path)
-print(str(cone_flower_metadata)[:2000])
+Import metadata by creating a `.SampleMetadata` instance.
+At creation, metadata contents are initially imported into a dataframe with a numerical index.
+Metadata labels and values are analyzed and a new index is automatically assigned, if possible.
+This index will be used by `.SampleSet` to match this metadata with corresponding MS data in `.MSfileSet`.
 
-# Get a summary of metadata contents
-cone_flower_metadata.describe()
+Requirements to auto index metadata:
+    * Has 1 or more entries/rows
+    * Has 2 or more labels/columns
+    * For one and only one label/column:
 
-# Manually set the dataframe index from an existing dataframe column
-#   (Unless it is not suitable for use as an index)
-# cone_flower_metadata.set_index('new_index')
+        * All label/column values are unique
+        * All entries/rows have a value for this label/column
 
-# Import more metadata- multiple metadata files can be used
-# more_metadata = SampleMetadata(more_meta_path)
+>>> cone_flower_metadata = SampleMetadata(csv_path)
+
+Access the metadata dataframe with the ``df`` attribute.
+
+>>> cone_flower_metadata.df
+                 class sampleType    site block treatment plantID tissue  siteblock sitetreatment polarity
+sampleMetadata
+EP0045          sample     sample  Becker    B1      HIGH    P031   leaf  Becker_B1   Becker_HIGH  unknown
+EP0046          sample     sample  Becker    B1      HIGH    P032   leaf  Becker_B1   Becker_HIGH  unknown
+EP0047          sample     sample  Becker    B1      HIGH    P033   leaf  Becker_B1   Becker_HIGH  unknown
+EP0048          sample     sample  Becker    B1      HIGH    P034   leaf  Becker_B1   Becker_HIGH  unknown
+EP0049          sample     sample  Becker    B1      HIGH    P035   leaf  Becker_B1   Becker_HIGH  unknown
+                ...        ...     ...   ...       ...     ...    ...        ...           ...      ...
+EP2848          sample     sample  Becker    B3        R1    P074   root  Becker_B3     Becker_R1  unknown
+EP2849          sample     sample  Becker    B3        R1    P075   root  Becker_B3     Becker_R1  unknown
+EP2850          sample     sample  Becker    B3        R1    P076   root  Becker_B3     Becker_R1  unknown
+EP2851          sample     sample  Becker    B3        R1    P077   root  Becker_B3     Becker_R1  unknown
+EP2852          sample     sample  Becker    B3        R1    P078   root  Becker_B3     Becker_R1  unknown
+[984 rows x 10 columns]
+
+Get a summary of metadata contents.
+
+>>> cone_flower_metadata.describe()
+         class sampleType    site block treatment plantID  tissue  siteblock sitetreatment polarity
+count      984        984     984   984       984     984     984        984           984      984
+unique       1          1       2     3         6     365       5          6            12        1
+top     sample     sample  Becker    B2       LOW    P102  flower  Becker_B1     Becker_R6  unknown
+freq       984        984     510   330       167       4     216        172            87      984
