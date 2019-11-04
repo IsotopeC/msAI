@@ -120,7 +120,7 @@ sample1_ms.peaks.loc[303, 100]
 #   * MS data is not initialized until called
 #   * Provides a quick view of what is available
 
-# Creat a SampleSet- Pairing MS data with sample metadata, default is to join on index of MS files
+# Create a SampleSet- Pairing MS data with sample metadata, default is to join on index of MS files
 #
 sample_set = SampleSet(ms_files, cone_flower_metadata)
 sample_set
