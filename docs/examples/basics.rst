@@ -152,7 +152,27 @@ EP2421        mzML  15.133800  examples/data/mzML/EP2421.mzML
 EP2536        mzML  12.745723  examples/data/mzML/EP2536.mzML
 
 
-Adding additional sample metadata
+Sample metadata
 =================================
 
-*(in progress)*
+Additional sample metadata can be imported and associated with MS data.
+
+from a CSV file and attempt to set an index
+#   * Contents initially imported into a dataframe with a numerical index
+#   * Metadata labels and values are analyzed and a new index is assigned, if possible
+#   * This index is used to match metadata with sample file
+
+csv_path = "./examples/data/metadata/coneflower_metadata.csv"
+
+cone_flower_metadata = SampleMetadata(csv_path)
+print(str(cone_flower_metadata)[:2000])
+
+# Get a summary of metadata contents
+cone_flower_metadata.describe()
+
+# Manually set the dataframe index from an existing dataframe column
+#   (Unless it is not suitable for use as an index)
+# cone_flower_metadata.set_index('new_index')
+
+# Import more metadata- multiple metadata files can be used
+# more_metadata = SampleMetadata(more_meta_path)

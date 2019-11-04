@@ -12,6 +12,12 @@ import msAI.msData as msData
 from msAI.samples import SampleSet
 from msAI.metadata import SampleMetadata
 
+import pandas as pd
+
+
+# Set pandas to display all columns
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
 
 # Paths to example data directories
 mzml_dir = "./examples/data/mzML"
@@ -32,7 +38,9 @@ sample_set1_msAIm_path = "./examples/data/msAIm/sample_set1.msAIm"
 #   * Metadata labels and values are analyzed and a new index is assigned, if possible
 #   * This index is used to match metadata with sample file
 cone_flower_metadata = SampleMetadata(csv_path)
-print(str(cone_flower_metadata)[:2000])
+
+# Access the dataframe with the 'df' attribute
+cone_flower_metadata.df
 
 # Get a summary of metadata contents
 cone_flower_metadata.describe()
@@ -78,7 +86,7 @@ sample1_ms.tic_sum
 # Spectra
 #   * Index: spec_id
 #   * Columns: rt, peak_count, tic, ms_lvl, filters
-print(sample1_ms.spectra.to_string()[:2000])
+sample1_ms.spectra
 
 # Get an individual spectrum with spec_id value
 sample1_ms.spectra.loc[303]
