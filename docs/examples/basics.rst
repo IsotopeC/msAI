@@ -148,7 +148,6 @@ Rather, it provides a quick view of the MS data files available for use.
 The next *Sample Sets* example demonstrates how this MS file set is used to create a `.SampleSet`
 and access the underlying MS data.
 
-
 >>> ms_files = msData.MSfileSet(mzml_dir)
 >>> ms_files
          file_type  file_size                            path
@@ -159,7 +158,7 @@ EP2536        mzML  12.745723  examples/data/mzML/EP2536.mzML
 
 
 Sample metadata
-=================================
+===============
 
 Additional sample metadata can be imported and associated with MS data.
 
