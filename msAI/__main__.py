@@ -3,7 +3,7 @@
 
 Future launch point for command line use.
 
-See README for introduction.
+See package README for introduction.
 
 """
 

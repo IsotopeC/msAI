@@ -229,7 +229,7 @@ class SampleRun:
     _ms: msData.MSfile
     """MS data from a`.MSfile` or a msAIr save."""
 
-    _metadata: Series
+    _metadata: Series = None
     """The metadata as a `.Series`."""
 
     def __init__(self, file_path):
