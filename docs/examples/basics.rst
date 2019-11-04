@@ -24,14 +24,19 @@ The `.MSfile` interface provides several properties for accessing MS metadata.
 
 >>> sample1_ms.run_id
 'EP2421'
+
 >>> sample1_ms.run_date
 '2017-06-28T04:10:21Z'
+
 >>> sample1_ms.ms_file_version
 '1.1.0'
+
 >>> sample1_ms.spectrum_count
 651
+
 >>> sample1_ms.peak_count
 1430013
+
 >>> sample1_ms.tic_sum
 103151911964.0
 
