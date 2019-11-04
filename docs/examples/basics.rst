@@ -7,6 +7,7 @@ Basic Usage
 Working with mass spectrometry data files
 =========================================
 
+
 Accessing data from a MS sample run
 -----------------------------------
 
@@ -17,7 +18,7 @@ Define the path to a MS data file, in this case a mzML file type.
 MS data is accessed using a `.MSfile` implementation matching the file type.
 `.MZMLfile` is used with mzML files. On creation, the mzML file is imported into memory.
 
->> sample1_ms = msData.MZMLfile(sample1_mzml_path)
+>>> sample1_ms = msData.MZMLfile(sample1_mzml_path)
 
 The `.MSfile` interface provides several properties for accessing MS metadata.
 
@@ -120,6 +121,7 @@ mz      125.060060
 i     10957.689453
 Name: (303, 100), dtype: float64
 
+
 Create set of MS files from a data directory
 --------------------------------------------
 
@@ -132,7 +134,7 @@ Create a set of the MS files in the data directory.
 This set is structured as a dataframe.
 Creating a `.MSfileSet` does not import the MS data into memory.
 Rather, it provides a quick view of the MS data files available for use.
-The next *Samples* example demonstrates how this MS file set is used to create a `.SampleSet`
+The next *Sample Sets* example demonstrates how this MS file set is used to create a `.SampleSet`
 and access the underlying MS data.
 
 
