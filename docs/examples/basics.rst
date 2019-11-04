@@ -31,10 +31,17 @@ The `.MSfile` interface provides several properties for accessing MS metadata.
 MS data is structured in dataframes and
 accessed by the `.MSfile.spectra` and `.MSfile.peaks` properties.
 
-# Spectra
-#   * Index: spec_id
-#   * Columns: rt, peak_count, tic, ms_lvl, filters
+Spectra dataframe structure
+    | **Index:**  spec_id
+    | **Columns:**  rt,  peak_count,  tic,  ms_lvl,  filters
+
 print(sample1_ms.spectra.to_string()[:2000])
+
+
+Peaks dataframe structure
+    | **First Index Level:**  spec_id
+    | **Second Index Level:**  peak_number
+    | **Columns:**  rt,  mz,  i
 
 # Get an individual spectrum with spec_id value
 sample1_ms.spectra.loc[303]
