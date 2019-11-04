@@ -41,7 +41,7 @@ The `.MSfile` interface provides several properties for accessing MS metadata.
 103151911964.0
 
 MS data is structured in dataframes and
-accessed by the `.MSfile.spectra` and `.MSfile.peaks` properties.
+accessed by the `.spectra` and `.peaks` properties.
 
 Spectra dataframe structure
     | **Index:**  spec_id
