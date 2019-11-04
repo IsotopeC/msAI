@@ -1,7 +1,7 @@
 
 """msAI package initialization.
 
-See README for introduction.
+See package README for introduction.
 
 """
 
