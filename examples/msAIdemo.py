@@ -128,7 +128,7 @@ sample_set
 # Get a single sample with filename
 sample_set.df.loc["EP2421"]
 
-# Get get metadata values with label names
+# Get metadata values with label names
 sample_set.df.loc["EP2421"].plantID
 sample_set.df.loc["EP2421"].tissue
 sample_set.df.loc["EP2421"].site
