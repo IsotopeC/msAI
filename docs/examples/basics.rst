@@ -6,7 +6,7 @@ Basic Usage
 This example demonstrates how to import and access data from MS and metadata files.
 Note that while individual `.MSfile` instances can manually be created for every sample run,
 typically it is best to define a `.MSfileSet` and `.SampleMetadata` as shown below
-and use these instances to create a `.SampleSet` as demonstrated in the next example.
+and use these instances to create a `.SampleSet` as demonstrated in the next :doc:`example <sampleSets>`.
 
 
 Working with mass spectrometry data files
