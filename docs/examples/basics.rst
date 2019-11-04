@@ -48,12 +48,19 @@ Spectra dataframe structure
     | **Columns:**  rt,  peak_count,  tic,  ms_lvl,  filters
 
 >>> sample1_ms.spectra
-             rt  peak_count           tic  ms_lvl                                    filters
-299    3.018841        1745  4.697734e+07       1  FTMS + p ESI Full ms [115.0000-1000.0000]
-301    3.039366        1836  4.806605e+07       1  FTMS + p ESI Full ms [115.0000-1000.0000]
-303    3.060012        2060  4.775426e+07       1  FTMS + p ESI Full ms [115.0000-1000.0000]
-305    3.080646        1828  4.685581e+07       1  FTMS + p ESI Full ms [115.0000-1000.0000]
-307    3.101156        1847  4.875970e+07       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+             rt  peak_count          tic  ms_lvl                                    filters
+299    3.018841        1745   46977344.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+301    3.039366        1836   48066048.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+303    3.060012        2060   47754260.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+305    3.080646        1828   46855808.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+307    3.101156        1847   48759696.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+         ...         ...          ...     ...                                        ...
+1591  15.918533        3416  118047380.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+1593  15.938479        3328  128021860.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+1595  15.958450        3348  128402500.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+1597  15.978360        3156  152132620.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+1599  15.998312        3285  174533700.0       1  FTMS + p ESI Full ms [115.0000-1000.0000]
+[651 rows x 5 columns]
 
 Peaks dataframe structure
     | **First Index Level:**  spec_id
@@ -75,7 +82,6 @@ spec_id peak_number
         3283         15.998312  992.56891  21931.212891
         3284         15.998312  993.56921   7275.180176
 [1430013 rows x 3 columns]
-
 
 Get an individual spectrum with spec_id value.
 
