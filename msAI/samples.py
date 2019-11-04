@@ -9,6 +9,7 @@ Features
 
 Todo
     * init_ms mp logging calls
+    * Create a msFile subclass form msAIr files - and move loading to that class
 
 """
 
@@ -18,6 +19,7 @@ import msAI.msData as msData
 from msAI.errors import SampleRunMSinitError
 from msAI.miscUtils import Saver, MultiTaskDF
 from msAI.miscDecos import log_timer
+from msAI.types import Series
 
 import logging
 import os
@@ -207,18 +209,41 @@ class SampleSet:
 
 
 class SampleRun:
-    """Class to hold data from a MS analysis run of a sample.
+    """Holds data from a MS analysis run of a sample and any additional metadata.
 
-    Data is extracted from a supported MS file type (currently only mzML) or loaded from a previous msAIr save.
-    File type is determined by file extension (.mzML or .msAIr).
+    A `SampleRun` instance is created with a path reference that is used to create a future `MSfile`,
+    or load MS data from a previously saved `SampleRun`.
+    This allows a cheep view of this data to exist without importing it all into memory.
+    A very large number of `SampleRun` instances can be created and their MS data initialized when needed.
+
+    Typically, `SampleRun` instances are not manually created, but instead arise from a `SampleSet`.
+
+    Data is extracted from a supported MS file type or loaded from a previous msAIr save.
+    File type is determined by file extension (.mzML .msAIr).
     A sha256 hash may be provided for a .msAIr file which will be verified during init_ms().
     """
 
+    file_path: str
+    """A string representation of the path to the MS file."""
+
+    _ms: msData.MSfile
+    """MS data from a`.MSfile` or a msAIr save."""
+
+    _metadata: Series
+    """The metadata as a `.Series`."""
+
     def __init__(self, file_path):
+        """Initializes an instance of SampleRun class.
+
+        Args:
+            file_path: A string representation of the path to the MS file.
+                Path can be relative or absolute.
+
+        """
         self.file_path = file_path
 
-        self._ms = msData.MSfile()
-        self._metadata = None
+        # self._ms = msData.MSfile()
+        # self._metadata = None
 
     @property
     def ms(self):

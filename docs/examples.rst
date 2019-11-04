@@ -1,21 +1,10 @@
 
-###########
+########
 Examples
-###########
+########
 
-Example msAI usage
+.. toctree::
+   :maxdepth: 2
 
-
-*******
-1
-*******
-
-*Section in progress*
-
-
-*************
-2
-*************
-
-*Section in progress*
-
+   examples/basics
+   examples/sampleSets
