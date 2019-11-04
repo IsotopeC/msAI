@@ -122,8 +122,8 @@ i     10957.689453
 Name: (303, 100), dtype: float64
 
 
-Create set of MS files from a data directory
---------------------------------------------
+Creating a set of MS files from a data directory
+------------------------------------------------
 
 Define the data directory path.
 By default, contents of sub directories will be recursively included.
@@ -146,3 +146,8 @@ EP0482        mzML  12.862821  examples/data/mzML/EP0482.mzML
 EP2421        mzML  15.133800  examples/data/mzML/EP2421.mzML
 EP2536        mzML  12.745723  examples/data/mzML/EP2536.mzML
 
+
+Adding additional sample metadata
+=================================
+
+*(in progress)*
