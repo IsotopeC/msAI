@@ -4,7 +4,7 @@ Basic Usage
 ***********
 
 This example demonstrates how to import and access data from MS and metadata files.
-While individual `.MSfile` instances can manually be created for every sample run,
+Note that while individual `.MSfile` instances can manually be created for every sample run,
 typically it is best to define a `.MSfileSet` and `.SampleMetadata` as shown below
 and use these instances to create a `.SampleSet` as demonstrated in the next example.
 
@@ -21,7 +21,7 @@ Define the path to a MS data file, in this case a mzML file type.
 >>> sample1_mzml_path = "./examples/data/mzML/EP2421.mzML"
 
 MS data is accessed using a `.MSfile` implementation matching the file type.
-`.MZMLfile` is used with mzML files. On creation, the mzML file is imported into memory.
+`.MZMLfile` is used with mzML data. On creation, the mzML file is imported into memory.
 
 >>> sample1_ms = msData.MZMLfile(sample1_mzml_path)
 
