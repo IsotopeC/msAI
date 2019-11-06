@@ -143,5 +143,25 @@ much faster as it is not necessary to parse the mzML file again.
 Additionally, since the entire `.SampleRun` instance is saved, the result of any calculations performed or new
 data attributes created will also be saved.
 
+Saving
+------
+
+Define the paths to the directories where data will be saved.
+
+>>> msAIr_dir = "./examples/data/msAIr"
+>>> msAIm_dir = "./examples/data/msAIm"
+
+Save all the samples in the `.SampleSet` as msAIr files to a directory.
+The same filenames are used with the ``.msAIr`` extension.
+
+>>> sample_set.save_all_ms(msAIr_dir)
+
+A hash value is calculated for each sample and added to the `.SampleSet` metadata.
+
+>>> sample_set.df['msAIr_hash']
+
+Save the `.SampleSet` metadata as a msAIm file to a directory.
+
+>>> sample_set.save_metadata(msAIm_dir, "sample_set1")
 
 
