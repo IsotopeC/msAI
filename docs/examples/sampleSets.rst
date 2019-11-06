@@ -132,4 +132,16 @@ spec_id peak_number
 Saving and loading sample sets
 ==============================
 
-*(in progress)*
+In this example workflow so far, the step requiring the most computational resources / time to complete is when the
+MS data is initialized - where data stored in mzML files is loaded into memory and structured as dataframes.
+When working with large datasets, this step becomes expensive to repeat.
+If samples will be needed again, they can be saved in an alternative format (msAIr file) that enables faster access and smaller storage size.
+This msAIr file type is created by serializing and compressing
+a `.SampleRun` instance, saving the state of all its in-memory data attributes.
+While there is a upfront cost to creating a msAIr save, a `.SampleRun` is loaded from a msAIr file
+much faster as it is not necessary to parse the mzML file again.
+Additionally, since the entire `.SampleRun` instance is saved, the result of any calculations performed or new
+data attributes created will also be saved.
+
+
+
