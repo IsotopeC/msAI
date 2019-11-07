@@ -22,7 +22,7 @@ copyright = '2019'
 author = 'Calvin Peters'
 
 # Full version, including alpha/beta/rc tags
-release = '1.3.0.dev0'
+release = '1.3.1.dev0'
 
 # File to use as the master doc
 master_doc = 'index'
