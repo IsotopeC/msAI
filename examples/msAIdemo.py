@@ -137,7 +137,7 @@ sample_set.df.loc["EP2421"].treatment
 # Note that SampleRuns are created
 sample_set.df.loc["EP2421"].run
 # But MS data is not available until initialized
-sample_set.df.loc["EP2421"].run.ms.spectra
+# sample_set.df.loc["EP2421"].run.ms.spectra
 
 # Initialize MS data
 sample_set.init_all_ms()
