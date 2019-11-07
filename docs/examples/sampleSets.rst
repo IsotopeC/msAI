@@ -179,12 +179,11 @@ Save the `.SampleSet` metadata as a msAIm file to a directory, a sha256 hash is 
 Loading
 -------
 
-# Use the same path to the directory where the msAIr files were saved previously.
+Use the same path to the directory where the msAIr files were saved previously.
 
 >>> msAIr_dir = "./examples/data/msAIr"
->>> msAIm_dir = "./examples/data/msAIm"
 
-# Create a `.MSfileSet` from the msAIr files. New mzML files can also be added and used in the same way.
+Create a `.MSfileSet` from the msAIr files. New mzML files can also be added and used in the same way.
 
 >>> msAIr_set = msData.MSfileSet(msAIr_dir)
 >>> msAIr_set
@@ -194,7 +193,7 @@ EP0482       msAIr   7.870908  examples/data/msAIr/EP0482.msAIr
 EP2421       msAIr   9.659162  examples/data/msAIr/EP2421.msAIr
 EP2536       msAIr   7.881509  examples/data/msAIr/EP2536.msAIr
 
-Compare this set to the original mzML version created above - note the smaller sizes of the msAI files.
+Compare this set to the original mzML version created above - note the smaller sizes of the ``msAIr`` files.
 
 >>> ms_files
          file_type  file_size                            path
