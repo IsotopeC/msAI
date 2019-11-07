@@ -87,9 +87,7 @@ But MS data is not available until initialized.
 >>> sample_set.df.loc["EP2421"].run.ms.spectra
 Traceback (most recent call last):
   File "<input>", line 1, in <module>
-  File "/home/c/Repos/msAI/msAI/samples.py", line 252, in ms
-    return self._ms
-AttributeError: 'SampleRun' object has no attribute '_ms'
+AttributeError: 'NoneType' object has no attribute 'spectra'
 
 Initialize all MS data.
 
