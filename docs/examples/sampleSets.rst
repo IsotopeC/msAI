@@ -7,6 +7,10 @@ This example demonstrates how to define an entire sample set
 which will automatically create a `.MSfile` interface for each data file.
 This demo uses the `.MSfileSet` and `.SampleMetadata` from the previous :doc:`example <basics>`
 to create a `.SampleSet`.
+The last section shows how to save all the `.SampleRun` instances and `.SampleMetadata` from the `.SampleSet`,
+as new ``msAIr`` files (one for each `.SampleRun`) and a single ``msAIm`` file for the `.SampleMetadata`.
+This example concludes by creating the `.SampleSet` again by loading from the msAI data files.
+The advantages of this new format is explained in that :ref:`section <saving-loading>`.
 
 
 Creating a sample set
@@ -128,20 +132,23 @@ spec_id peak_number
         3284         15.998312  993.56921   7275.180176
 [1430013 rows x 3 columns]
 
+.. _saving-loading:
 
 Saving and loading sample sets
 ==============================
 
-In this example workflow so far, the step requiring the most computational resources / time to complete is when the
-MS data is initialized - where data stored in mzML files is loaded into memory and structured as dataframes.
-When working with large datasets, this step becomes expensive to repeat.
-If samples will be needed again, they can be saved in an alternative format (msAIr file) that enables faster access and smaller storage size.
-This msAIr file type is created by serializing and compressing
-a `.SampleRun` instance, saving the state of all its in-memory data attributes.
-While there is a upfront cost to creating a msAIr save, a `.SampleRun` is loaded from a msAIr file
-much faster as it is not necessary to parse the mzML file again.
-Additionally, since the entire `.SampleRun` instance is saved, the result of any calculations performed or new
-data attributes created will also be saved.
+In this example workflow so far, the step requiring the most computational resources / time to complete was the step
+initializing the MS data - where data stored in mzML files is loaded into memory and structured as dataframes.
+When working with large data sets, this step becomes expensive to repeat.
+
+If `.SampleRun` data will be needed again, it can be saved in an alternative format (msAIr file) that enables faster access and smaller storage size.
+This msAIr file type is created by serializing and compressing a `.SampleRun` instance,
+saving the state of all its in-memory data attributes.
+While there is an upfront cost to creating a msAIr save, future `.SampleRun` instantiations from a msAIr file
+will be much faster as it is not necessary to parse the mzML file again.
+Additionally, since the entire `.SampleRun` instance is saved, the results of calculations performed or new
+data attributes created will also be persist.
+
 
 Saving
 ------
@@ -156,7 +163,7 @@ The same filenames are used with the ``.msAIr`` extension.
 
 >>> sample_set.save_all_ms(msAIr_dir)
 
-A hash value is calculated for each sample and added to the `.SampleSet` metadata.
+A sha256 hash value is calculated for each sample and added to the `.SampleSet` metadata.
 
 >>> sample_set.df['msAIr_hash']
 
@@ -165,3 +172,45 @@ Save the `.SampleSet` metadata as a msAIm file to a directory.
 >>> sample_set.save_metadata(msAIm_dir, "sample_set1")
 
 
+Loading
+-------
+
+# Use the same path to the directory where the msAIr files were saved previously.
+
+>>> msAIr_dir = "./examples/data/msAIr"
+>>> msAIm_dir = "./examples/data/msAIm"
+
+# Create a `.MSfileSet` from the msAIr files. New mzML files can also be added and used in the same way.
+
+>>> msAIr_set = msData.MSfileSet(msAIr_dir)
+>>> msAIr_set
+
+Compare this set to the original mzML version created above - note the smaller sizes of the msAI files.
+
+>>> ms_files
+
+Define the path to the msAIm file created above.
+
+>>> sample_set1_msAIm_path = "./examples/data/msAIm/sample_set1.msAIm"
+
+Load the `.SampleMetadata` from the msAIm file.
+
+>>> msAIm = SampleMetadata(sample_set1_msAIm_path)
+>>> msAIm
+
+Load the SampleSet and initialize.
+
+>>> sample_set1 = SampleSet(msAIr_set, msAIm)
+>>> sample_set1.init_all_ms()
+sample_set1
+
+Access MS data and metadata the same way as before.
+
+>>> sample_set1.df.loc["EP2421"]
+>>> sample_set1.df.loc["EP2421"].plantID
+>>> sample_set1.df.loc["EP2421"].tissue
+>>> sample_set1.df.loc["EP2421"].site
+>>> sample_set1.df.loc["EP2421"].treatment
+>>> sample_set1.df.loc["EP2421"].run.ms.run_date
+>>> sample_set1.df.loc["EP2421"].run.ms.spectra
+>>> sample_set1.df.loc["EP2421"].run.ms.peaks
