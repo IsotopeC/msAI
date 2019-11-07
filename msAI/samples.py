@@ -226,7 +226,7 @@ class SampleRun:
     file_path: str
     """A string representation of the path to the MS file."""
 
-    _ms: msData.MSfile
+    _ms: msData.MSfile = None
     """MS data from a`.MSfile` or a msAIr save."""
 
     _metadata: Series = None
