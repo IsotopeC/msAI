@@ -27,5 +27,7 @@ The `fixtures` module defines reusable fixtures for use by test functions.
 Documentation
 *************
 
-*Section in progress*
-
+msAI uses `Sphinx <https://www.sphinx-doc.org>`_ to generate documentation from `reStructuredText <http://docutils.sourceforge.net/rst.html>`_.
+The project's reStructuredText documents are located in the `docs` directory.
+Sphinx extensions are used to automatically parse source code docstrings and generate documentation.
+Docstrings are written in `Google style <https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings>`_.
