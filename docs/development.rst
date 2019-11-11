@@ -3,7 +3,15 @@
 Development
 ###########
 
-msAI - Software Tools to Create AI Models for Mass Spectrometry Data
+msAI development information.
+
+
+***********
+Source Code
+***********
+
+This project uses `git <https://git-scm.com/>`_ for source code version control.
+The main msAI source code repository is hosted on GitHub at: https://github.com/IsotopeC/msAI.
 
 
 *******
