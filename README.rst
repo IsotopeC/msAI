@@ -62,3 +62,9 @@ Documentation
 
 https://msai.readthedocs.io
 
+
+***********
+Source Code
+***********
+
+https://github.com/IsotopeC/msAI
