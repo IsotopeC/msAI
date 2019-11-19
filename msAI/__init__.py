@@ -12,13 +12,20 @@ from msAI.miscUtils import EnvInfo
 import os
 import logging
 from datetime import datetime
-
+from enum import Enum, auto
 
 # Package Name
 name = "msAI"
 
 
-def set_logging(mode):
+class LogMode(Enum):
+    DEV = auto()
+    RELEASE = auto()
+    LIB = auto()
+    NONE = auto()
+
+
+def set_logging(mode: LogMode) -> logging.Logger:
     """Configures msAI logging for development, release, library, or silent use.
 
     Set mode parameter to 'dev', 'release', 'lib', or 'none'
@@ -43,6 +50,8 @@ def set_logging(mode):
         none mode:
             * Logging exceptions will NOT be raised
             * Root logger will use NullHandler to prevent messages from being displayed
+    Returns:
+        The msAI root logger
     """
 
     # Module names are used as logger names- thus submodules are automatically child loggers
@@ -51,7 +60,7 @@ def set_logging(mode):
     # Create / ensure log directory exists
     os.makedirs("./logs", exist_ok=True)
 
-    if mode == 'dev':
+    if mode == LogMode.DEV:
         logging.raiseExceptions = True
         root_logger.setLevel(logging.DEBUG)
 
@@ -63,7 +72,7 @@ def set_logging(mode):
         log_file = logging.FileHandler('./logs/msAI_log-dev', mode='w')
         log_file.setLevel(logging.DEBUG)
 
-    elif mode == 'release':
+    elif mode == LogMode.RELEASE:
         logging.raiseExceptions = False
         root_logger.setLevel(logging.INFO)
 
@@ -75,10 +84,10 @@ def set_logging(mode):
         log_file = logging.FileHandler("./logs/msAI_log-" + datetime.now().strftime("%Y-%m-%d-%H:%M:%S"))
         log_file.setLevel(logging.INFO)
 
-    elif mode == 'lib':
+    elif mode == LogMode.LIB:
         logging.raiseExceptions = False
 
-    elif mode == 'none':
+    elif mode == LogMode.NONE:
         logging.raiseExceptions = False
         root_logger.addHandler(logging.NullHandler())
 
@@ -86,7 +95,7 @@ def set_logging(mode):
         raise RootError(f"Invalid logging mode: {mode}")
 
     # Configure components shared by dev and release modes
-    if mode == 'dev' or mode == 'release':
+    if mode == LogMode.DEV or mode == LogMode.RELEASE:
         # Log formatter
         log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         log_file.setFormatter(log_formatter)
@@ -148,7 +157,8 @@ def set_mp_support(mode='auto', workers='auto'):
 
 
 # Set logging mode
-logger = set_logging('dev')
+# logger = set_logging('dev')
+logger = set_logging(LogMode.DEV)
 # logger = set_logging('release')
 # logger = set_logging('lib')
 # logger = set_logging('none')
