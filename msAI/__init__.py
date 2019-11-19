@@ -18,11 +18,14 @@ from enum import Enum, auto
 name = "msAI"
 
 
-class LogMode(Enum):
-    DEV = auto()
-    RELEASE = auto()
-    LIB = auto()
-    NONE = auto()
+LogMode = Enum('LogMode', ('DEV', 'RELEASE', 'LIB', 'NONE'), module=__name__)
+
+
+# class LogMode(Enum):
+#     DEV = auto()
+#     RELEASE = auto()
+#     LIB = auto()
+#     NONE = auto()
 
 
 def set_logging(mode: LogMode) -> logging.Logger:
