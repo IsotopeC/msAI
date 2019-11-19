@@ -18,14 +18,11 @@ from enum import Enum, auto
 name = "msAI"
 
 
-LogMode = Enum('LogMode', 'DEV RELEASE LIB NONE', module=__name__)
-
-
-# class LogMode(Enum):
-#     DEV = auto()
-#     RELEASE = auto()
-#     LIB = auto()
-#     NONE = auto()
+class LogMode(Enum):
+    DEV = auto()
+    RELEASE = auto()
+    LIB = auto()
+    NONE = auto()
 
 
 def set_logging(mode: LogMode) -> logging.Logger:
@@ -53,6 +50,7 @@ def set_logging(mode: LogMode) -> logging.Logger:
         none mode:
             * Logging exceptions will NOT be raised
             * Root logger will use NullHandler to prevent messages from being displayed
+
     Returns:
         The msAI root logger
     """
@@ -109,7 +107,7 @@ def set_logging(mode: LogMode) -> logging.Logger:
         root_logger.addHandler(log_console)
 
     # Log logging mode
-    root_logger.info(f"Logging in {mode} mode")
+    root_logger.info(f"Root logging as {mode}")
 
     return root_logger
 
@@ -160,11 +158,10 @@ def set_mp_support(mode='auto', workers='auto'):
 
 
 # Set logging mode
-# logger = set_logging('dev')
 logger = set_logging(LogMode.DEV)
-# logger = set_logging('release')
-# logger = set_logging('lib')
-# logger = set_logging('none')
+# logger = set_logging(LogMode.RELEASE)
+# logger = set_logging(LogMode.LIB)
+# logger = set_logging(LogMode.NONE)
 
 logger.info("msAI Starting")
 
