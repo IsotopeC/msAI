@@ -18,7 +18,7 @@ from enum import Enum, auto
 name = "msAI"
 
 
-LogMode = Enum('LogMode', ('DEV', 'RELEASE', 'LIB', 'NONE'), module=__name__)
+LogMode = Enum('LogMode', 'DEV RELEASE LIB NONE', module=__name__)
 
 
 # class LogMode(Enum):
