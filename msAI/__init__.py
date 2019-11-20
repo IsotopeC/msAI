@@ -19,7 +19,10 @@ name = "msAI"
 
 
 class LogMode(Enum):
-    """Enumeration of arguments accepted by the `set_logging` function's ``mode`` parameter."""
+    """Enumeration of arguments accepted by the `set_logging` function's ``mode`` parameter.
+
+    See `set_logging` for mode details.
+    """
 
     DEV = auto()
     """Specifies logging mode for development."""
@@ -37,31 +40,35 @@ class LogMode(Enum):
 def set_logging(mode: LogMode) -> logging.Logger:
     """Configures msAI logging for development, release, library, or silent use.
 
-    Set mode parameter to 'dev', 'release', 'lib', or 'none'
+    Args:
+        mode: The logging configuration to set.
 
-        dev mode:
-            * Logging exceptions will be raised
-            * Messages of severity INFO and higher are displayed on console
-            * Messages of severity DEBUG and higher are saved to the log file
-            * Log file is overwritten each run
+            `LogMode.DEV`:
+                * Logging exceptions will be raised
+                * Messages of severity INFO and higher are displayed on console
+                * Messages of severity DEBUG and higher are saved to the log file
+                * Log file is overwritten each run
 
-        release mode:
-            * Logging exceptions will NOT be raised
-            * Messages of severity WARNING and higher are displayed on console
-            * Messages of severity INFO and higher are saved to the log file
-            * All log files are saved for each run - named with date/time
+            `LogMode.RELEASE`:
+                * Logging exceptions will NOT be raised
+                * Messages of severity WARNING and higher are displayed on console
+                * Messages of severity INFO and higher are saved to the log file
+                * All log files are saved for each run - named with date/time
 
-        lib mode:
-            * Logging exceptions will NOT be raised
-            * Log handlers are left unconfigured
-              Python default will write messages or severity WARNING or higher to console
+            `LogMode.LIB`:
+                * Logging exceptions will NOT be raised
+                * Log handlers are left unconfigured
+                  Python default will write messages or severity WARNING or higher to console
 
-        none mode:
-            * Logging exceptions will NOT be raised
-            * Root logger will use NullHandler to prevent messages from being displayed
+            `LogMode.NONE`:
+                * Logging exceptions will NOT be raised
+                * Root logger will use NullHandler to prevent messages from being displayed
 
     Returns:
-        The msAI root logger
+        The msAI root logger.
+
+    Raises:
+        RootError: For an invalid logging mode.
     """
 
     # Module names are used as logger names- thus submodules are automatically child loggers
