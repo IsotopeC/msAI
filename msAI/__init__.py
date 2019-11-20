@@ -12,37 +12,63 @@ from msAI.miscUtils import EnvInfo
 import os
 import logging
 from datetime import datetime
-
+from enum import Enum, auto
 
 # Package Name
 name = "msAI"
 
 
-def set_logging(mode):
+class LogMode(Enum):
+    """Enumeration of arguments accepted by the `set_logging` function's ``mode`` parameter.
+
+    See `set_logging` for mode details.
+    """
+
+    DEV = auto()
+    """Specifies logging mode for development."""
+
+    RELEASE = auto()
+    """Specifies logging mode for release."""
+
+    LIB = auto()
+    """Specifies logging mode for use as a library."""
+
+    NONE = auto()
+    """Specifies a silent logging mode."""
+
+
+def set_logging(mode: LogMode) -> logging.Logger:
     """Configures msAI logging for development, release, library, or silent use.
 
-    Set mode parameter to 'dev', 'release', 'lib', or 'none'
+    Args:
+        mode: The logging configuration to set.
 
-        dev mode:
-            * Logging exceptions will be raised
-            * Messages of severity INFO and higher are displayed on console
-            * Messages of severity DEBUG and higher are saved to the log file
-            * Log file is overwritten each run
+            `LogMode.DEV`:
+                * Logging exceptions will be raised
+                * Messages of severity INFO and higher are displayed on console
+                * Messages of severity DEBUG and higher are saved to the log file
+                * Log file is overwritten each run
 
-        release mode:
-            * Logging exceptions will NOT be raised
-            * Messages of severity WARNING and higher are displayed on console
-            * Messages of severity INFO and higher are saved to the log file
-            * All log files are saved for each run - named with date/time
+            `LogMode.RELEASE`:
+                * Logging exceptions will NOT be raised
+                * Messages of severity WARNING and higher are displayed on console
+                * Messages of severity INFO and higher are saved to the log file
+                * All log files are saved for each run - named with date/time
 
-        lib mode:
-            * Logging exceptions will NOT be raised
-            * Log handlers are left unconfigured
-              Python default will write messages or severity WARNING or higher to console
+            `LogMode.LIB`:
+                * Logging exceptions will NOT be raised
+                * Log handlers are left unconfigured
+                  Python default will write messages or severity WARNING or higher to console
 
-        none mode:
-            * Logging exceptions will NOT be raised
-            * Root logger will use NullHandler to prevent messages from being displayed
+            `LogMode.NONE`:
+                * Logging exceptions will NOT be raised
+                * Root logger will use NullHandler to prevent messages from being displayed
+
+    Returns:
+        The msAI root logger.
+
+    Raises:
+        RootError: For an invalid logging mode.
     """
 
     # Module names are used as logger names- thus submodules are automatically child loggers
@@ -51,7 +77,7 @@ def set_logging(mode):
     # Create / ensure log directory exists
     os.makedirs("./logs", exist_ok=True)
 
-    if mode == 'dev':
+    if mode == LogMode.DEV:
         logging.raiseExceptions = True
         root_logger.setLevel(logging.DEBUG)
 
@@ -63,7 +89,7 @@ def set_logging(mode):
         log_file = logging.FileHandler('./logs/msAI_log-dev', mode='w')
         log_file.setLevel(logging.DEBUG)
 
-    elif mode == 'release':
+    elif mode == LogMode.RELEASE:
         logging.raiseExceptions = False
         root_logger.setLevel(logging.INFO)
 
@@ -75,10 +101,10 @@ def set_logging(mode):
         log_file = logging.FileHandler("./logs/msAI_log-" + datetime.now().strftime("%Y-%m-%d-%H:%M:%S"))
         log_file.setLevel(logging.INFO)
 
-    elif mode == 'lib':
+    elif mode == LogMode.LIB:
         logging.raiseExceptions = False
 
-    elif mode == 'none':
+    elif mode == LogMode.NONE:
         logging.raiseExceptions = False
         root_logger.addHandler(logging.NullHandler())
 
@@ -86,7 +112,7 @@ def set_logging(mode):
         raise RootError(f"Invalid logging mode: {mode}")
 
     # Configure components shared by dev and release modes
-    if mode == 'dev' or mode == 'release':
+    if mode == LogMode.DEV or mode == LogMode.RELEASE:
         # Log formatter
         log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         log_file.setFormatter(log_formatter)
@@ -97,7 +123,7 @@ def set_logging(mode):
         root_logger.addHandler(log_console)
 
     # Log logging mode
-    root_logger.info(f"Logging in {mode} mode")
+    root_logger.info(f"Root logging as {mode}")
 
     return root_logger
 
@@ -148,10 +174,10 @@ def set_mp_support(mode='auto', workers='auto'):
 
 
 # Set logging mode
-logger = set_logging('dev')
-# logger = set_logging('release')
-# logger = set_logging('lib')
-# logger = set_logging('none')
+logger = set_logging(LogMode.DEV)
+# logger = set_logging(LogMode.RELEASE)
+# logger = set_logging(LogMode.LIB)
+# logger = set_logging(LogMode.NONE)
 
 logger.info("msAI Starting")
 
