@@ -19,10 +19,19 @@ name = "msAI"
 
 
 class LogMode(Enum):
+    """Enumeration of arguments accepted by the `set_logging` function's ``mode`` parameter."""
+
     DEV = auto()
+    """Specifies logging mode for development."""
+
     RELEASE = auto()
+    """Specifies logging mode for release."""
+
     LIB = auto()
+    """Specifies logging mode for use as a library."""
+
     NONE = auto()
+    """Specifies a silent logging mode."""
 
 
 def set_logging(mode: LogMode) -> logging.Logger:
