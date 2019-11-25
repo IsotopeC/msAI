@@ -150,6 +150,12 @@ def set_mp_support(mode: str = 'auto', workers: Union[str, int] = 'auto') -> Tup
         workers: The number of worker processes to use for multiprocessing.
 
             `auto`: Sets number of workers to CPU count.
+
+    Returns:
+        A Tuple specifying MP_SUPPORT and working count.
+
+    Raises:
+        RootError: For an invalid multiprocessing mode.
     """
 
     if EnvInfo.mp_method() == 'fork':
