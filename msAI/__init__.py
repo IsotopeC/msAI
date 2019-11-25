@@ -13,6 +13,7 @@ import os
 import logging
 from datetime import datetime
 from enum import Enum, auto
+from typing import Tuple, Union
 
 # Package Name
 name = "msAI"
@@ -128,18 +129,18 @@ def set_logging(mode: LogMode) -> logging.Logger:
     return root_logger
 
 
-def set_mp_support(mode='auto', workers='auto'):
+def set_mp_support(mode: str = 'auto', workers: Union[str, int] = 'auto') -> Tuple[bool, int]:
     """Configures msAI multiprocessing.
 
     The package variable MP_SUPPORT is a boolean set to enable / disable multiprocessing use package wide.
     This is necessary as certain operations will fail if the multiprocessing module uses the 'spawn' start method.
     The start method default is determined by OS type.
 
-    Set mode parameter to 'auto', 'disabled', 'enabled'.
-    'auto' mode will set MP_SUPPORT to True if the multiprocessing start method used is 'fork'.
-
-    Set workers parameter to the number of worker processes to use
-    'auto' will set number to CPU count.
+    Args:
+        mode:'auto', 'disabled', 'enabled'.
+            'auto' mode will set MP_SUPPORT to True if the multiprocessing start method used is 'fork'.
+        workers: Set workers parameter to the number of worker processes to use
+            'auto' will set number to CPU count.
     """
 
     if EnvInfo.mp_method() == 'fork':
