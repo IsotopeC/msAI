@@ -13,13 +13,14 @@ import os
 import logging
 from datetime import datetime
 from enum import Enum, auto
+from typing import Tuple, Union
 
 # Package Name
 name = "msAI"
 
 
 class LogMode(Enum):
-    """Enumeration of arguments accepted by the `set_logging` function's ``mode`` parameter.
+    """Enumeration of arguments accepted by the `set_logging` function's `mode` parameter.
 
     See `set_logging` for mode details.
     """
@@ -128,18 +129,33 @@ def set_logging(mode: LogMode) -> logging.Logger:
     return root_logger
 
 
-def set_mp_support(mode='auto', workers='auto'):
+def set_mp_support(mode: str = 'auto', workers: Union[str, int] = 'auto') -> Tuple[bool, int]:
     """Configures msAI multiprocessing.
 
-    The package variable MP_SUPPORT is a boolean set to enable / disable multiprocessing use package wide.
+    The package variable MP_SUPPORT is a boolean set to enable / disable multiprocessing in the msAI package.
     This is necessary as certain operations will fail if the multiprocessing module uses the 'spawn' start method.
     The start method default is determined by OS type.
 
-    Set mode parameter to 'auto', 'disabled', 'enabled'.
-    'auto' mode will set MP_SUPPORT to True if the multiprocessing start method used is 'fork'.
+    Args:
+        mode: A string specifying the multiprocessing configuration.
 
-    Set workers parameter to the number of worker processes to use
-    'auto' will set number to CPU count.
+            `auto`: Configures multiprocessing support automatically based on OS.
+            Multiprocessing will be enabled if the multiprocessing start method in use is 'fork'.
+
+            `enable`: Manually enables multiprocessing.
+            Errors may occur if multiprocessing is not fully supported by OS.
+
+            `disable`: Manually disables multiprocessing.
+
+        workers: The number of worker processes to use for multiprocessing.
+
+            `auto`: Sets number of workers to CPU count.
+
+    Returns:
+        A Tuple specifying MP_SUPPORT and working count.
+
+    Raises:
+        RootError: For an invalid multiprocessing mode.
     """
 
     if EnvInfo.mp_method() == 'fork':

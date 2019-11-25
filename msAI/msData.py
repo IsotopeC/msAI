@@ -236,7 +236,7 @@ class MSfileSet:
         Args:
             dir_path: A string representation of the path to the data directory.
                 Path can be relative or absolute.
-            data_type: (``'all'``, ``'mzML'``, ``'msAIr'``) The type of MS files to include in the set.
+            data_type: (`all`, `mzML`, `msAIr`) The type of MS files to include in the set.
                 By default, all types are included.
             recursive: A boolean indicating if files in subdirectories are included in the set.
                 Defaults to ``True``.
