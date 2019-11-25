@@ -3,6 +3,9 @@
 
 See package README for introduction.
 
+Todo
+    * Move configuration functions to separate modules
+
 """
 
 
