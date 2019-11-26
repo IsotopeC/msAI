@@ -34,7 +34,7 @@ class FileGrabber:
 
     @staticmethod
     def multi_extensions(directory: str, *extensions: str, recursive: bool = True) -> Iterable[pathlib.Path]:
-        """Create an iterator of path objects to all files in a directory matching the passed extensions.
+        """Creates an iterator of path objects to all files in a directory matching the passed extensions.
 
         Use ``str(path_obj)`` to get the platform independent path string.
         Subdirectories will be recursively searched by default.
@@ -101,34 +101,58 @@ class FileGrabber:
 
 
 class Sizer:
-    """Functions to measure data size."""
+    """Functions to measure memory / storage sizes."""
 
     @staticmethod
-    def obj_mb(obj):
-        """Returns the size of a python object in MBs."""
+    def obj_mb(obj: object) -> float:
+        """Measures the memory size of a python object in MBs.
+
+        Args:
+            obj: The python object to measure.
+
+        Returns:
+            The Python object's size in memory in MBs.
+        """
 
         obj_size_mb = (sys.getsizeof(obj) * 0.000001)
         return obj_size_mb
 
     @staticmethod
-    def print_obj_mb(obj):
-        """Prints the size of a python object in MBs."""
+    def print_obj_mb(obj: object):
+        """Prints the memory size of a python object in MBs to 4 decimals.
+
+        Args:
+            obj: The python object to measure.
+        """
 
         obj_size_mb = Sizer.obj_mb(obj)
         print(f"objSizeMB: {obj_size_mb:.4f}")
 
     @staticmethod
-    def file_mb(file):
-        """Returns the size of a file in MBs."""
+    def file_mb(file_path: str):
+        """Measures the storage size of a file in MBs.
 
-        obj_size_mb = (os.path.getsize(file) * 0.000001)
-        return obj_size_mb
+        Args:
+            file_path: A string representation of the path to the file to measure.
+                Path can be relative or absolute.
+
+        Returns:
+            The storage size of the file in MBs.
+        """
+
+        file_size_mb = (os.path.getsize(file_path) * 0.000001)
+        return file_size_mb
 
     @staticmethod
-    def print_file_mb(file):
-        """Prints the size of a file in MBs, to 4 decimals."""
+    def print_file_mb(file_path):
+        """Prints the storage size of a file in MBs to 4 decimals.
 
-        file_size_mb = Sizer.file_mb(file)
+        Args:
+            file_path: A string representation of the path to the file to measure.
+                Path can be relative or absolute.
+        """
+
+        file_size_mb = Sizer.file_mb(file_path)
         print(f"fileSizeMB: {file_size_mb:.4f}")
 
 
