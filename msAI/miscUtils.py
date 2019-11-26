@@ -12,6 +12,7 @@ import sys
 import os
 import platform
 import itertools
+from typing import Iterator
 import hashlib
 import pickle
 import bz2
@@ -32,16 +33,25 @@ class FileGrabber:
     """Functions to grab files."""
 
     @staticmethod
-    def multi_extensions(directory, *extensions, recursive=True):
-        """Returns an iterator of path objects to all files in a directory matching the passed extensions.
+    def multi_extensions(directory: str, *extensions: str, recursive: bool = True) -> Iterator:
+        """Create an iterator of path objects to all files in a directory matching the passed extensions.
 
-        Extensions are specified without leading ``.``.
-        Use str(path_obj) to get the platform independent path string.
+        Use ``str(path_obj)`` to get the platform independent path string.
         Subdirectories will be recursively searched by default.
 
         Note:
             While Windows paths are case insensitve, Posix paths are case sensitive.
             Thus the set of casefolded extensions will be used on Windows systems.
+
+        Args:
+            directory: A string representation of the path to the directory.
+                Path can be relative or absolute.
+            extensions: One or more file extensions specified as strings without leading (.).
+            recursive: A boolean indicating if files in subdirectories are included.
+                Defaults to ``True``.
+
+        Returns:
+             An iterator of path objects to all files found.
         """
 
         dir_path = pathlib.Path(directory)
