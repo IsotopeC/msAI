@@ -70,14 +70,22 @@ class FileGrabber:
         return itertools.chain.from_iterable(glob_func(pattern) for pattern in ext_list)
 
     @staticmethod
-    def path_type(directory='.'):
+    def path_type(directory: str = '.') -> str:
         """Get the path type of a directory.
 
-        Returns a string of either 'posix' or 'windows'.
         Path type is identified by the class of Path object created.
-
         This test is used for determining what glob patterns to apply based on path case sensitivity.
         Windows paths are case insensitve, while Posix paths are case sensitive.
+
+        Args:
+            directory: A string representation of the path to the directory.
+                Path can be relative or absolute. Defaults to current directory.
+
+        Returns:
+            A string of either ``'posix'`` or ``'windows'``, indicating the path type.
+
+        Raises:
+            MiscUtilsError: For unknown path type.
         """
 
         path = pathlib.Path(directory)
