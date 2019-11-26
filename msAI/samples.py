@@ -238,7 +238,6 @@ class SampleRun:
         Args:
             file_path: A string representation of the path to the MS file.
                 Path can be relative or absolute.
-
         """
         self.file_path = file_path
 
