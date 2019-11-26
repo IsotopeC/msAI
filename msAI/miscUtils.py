@@ -12,7 +12,7 @@ import sys
 import os
 import platform
 import itertools
-from typing import Iterable
+from typing import Iterable, Optional, Tuple
 import hashlib
 import pickle
 import bz2
@@ -162,34 +162,47 @@ class Saver:
     """Functions to save / load, serialize, and compress files and objects."""
 
     @staticmethod
-    def save_obj(obj, file):
+    def save_obj(obj: object,
+                 file: str) -> str:
         """Saves a python object to the path / filename given.
 
         Data is serialized with pickle and compressed via bzip2.
-        A sha256 hash is returned.
+        A sha256 hash is also calculated.
 
         Args:
             obj: The python object to save.
             file: A string representation of the path to the file to save.
                 Path can be relative or absolute.
+
+        Returns:
+            A sha256 hash as a string.
         """
 
         file_path = pathlib.Path(file)
         with bz2.open(file_path, "wb") as save_file:
             pickle.dump(obj, save_file, pickle.HIGHEST_PROTOCOL)
 
-        return Saver.get_hash(file_path)
+        return Saver.get_hash(file)
 
     @staticmethod
-    def get_hash(file):
-        """Calculate the sha256 hash of a file."""
+    def get_hash(file: str) -> str:
+        """Calculates the sha256 hash of a file.
+
+        Args:
+            file: A string representation of the path to the file to calculate a hash for.
+                Path can be relative or absolute.
+
+        Returns:
+            A sha256 hash as a string.
+        """
 
         # The size of each read from the file
         BLOCK_SIZE = 65536
 
         file_hash = hashlib.sha256()
 
-        with open(file, 'rb') as file:
+        file_path = pathlib.Path(file)
+        with open(file_path, 'rb') as file:
             file_block = file.read(BLOCK_SIZE)
             while len(file_block) > 0:
                 file_hash.update(file_block)
@@ -199,8 +212,19 @@ class Saver:
         return file_hash.hexdigest()
 
     @staticmethod
-    def verify_hash(file, test_hash):
-        """Verifies the sha256 hash of a file."""
+    def verify_hash(file: str,
+                    test_hash: str) -> bool:
+        """Verifies the sha256 hash of a file.
+
+        Args:
+            file: A string representation of the path to the file to calculate and compare hash value for.
+                Path can be relative or absolute.
+            test_hash: A sha256 hash as a string to test against.
+
+        Returns:
+            A boolean indicating if the hash value is verified.
+            ``True`` means the calculated hash matches the test hash.
+        """
 
         calc_hash = Saver.get_hash(file)
 
@@ -210,24 +234,32 @@ class Saver:
             return False
 
     @staticmethod
-    def load_obj(file, check_hash=None):
-        """Loads a previously saved object at the given path/filename.
+    def load_obj(file: str,
+                 test_hash: Optional[str]) -> Tuple[object, Optional[bool]]:
+        """Loads a previously saved object.
 
         The file will be tested against a sha256 hash, if provided.
         Data is decompressed via bzip2 and deserialized with pickle.
 
-        The object is returned along with results of verify_hash, or none if no hash is present.
+        Args:
+            file: A string representation of the path to the file to load the object from.
+                Path can be relative or absolute.
+            test_hash: A sha256 hash as a string to test against.
+
+        Returns:
+            A tuple of the object and an optional boolean indicating if the hash of the saved file was verified.
         """
 
-        if check_hash is not None:
-            if Saver.verify_hash(file, check_hash):
+        if test_hash is not None:
+            if Saver.verify_hash(file, test_hash):
                 hash_verified = True
             else:
                 hash_verified = False
         else:
             hash_verified = None
 
-        with bz2.open(file, "rb") as file:
+        file_path = pathlib.Path(file)
+        with bz2.open(file_path, "rb") as file:
             obj = pickle.load(file)
 
         return obj, hash_verified
