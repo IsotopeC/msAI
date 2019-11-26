@@ -39,10 +39,6 @@ class FileGrabber:
         Use ``str(path_obj)`` to get the platform independent path string.
         Subdirectories will be recursively searched by default.
 
-        Note:
-            While Windows paths are case insensitve, Posix paths are case sensitive.
-            Thus the set of casefolded extensions will be used on Windows systems.
-
         Args:
             directory: A string representation of the path to the directory.
                 Path can be relative or absolute.
@@ -56,8 +52,10 @@ class FileGrabber:
 
         dir_path = pathlib.Path(directory)
         path_type = FileGrabber.path_type(directory)
-
         ext_list = list(set(extensions))
+
+        # While Windows paths are case insensitve, Posix paths are case sensitive.
+        # Thus the set of casefolded extensions will be used on Windows systems.
         if path_type == 'windows':
             ext_list = list(set(map(str.casefold, ext_list)))
 
