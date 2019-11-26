@@ -12,7 +12,7 @@ import sys
 import os
 import platform
 import itertools
-from typing import Iterator
+from typing import Iterable
 import hashlib
 import pickle
 import bz2
@@ -33,7 +33,7 @@ class FileGrabber:
     """Functions to grab files."""
 
     @staticmethod
-    def multi_extensions(directory: str, *extensions: str, recursive: bool = True) -> Iterator:
+    def multi_extensions(directory: str, *extensions: str, recursive: bool = True) -> Iterable[pathlib.Path]:
         """Create an iterator of path objects to all files in a directory matching the passed extensions.
 
         Use ``str(path_obj)`` to get the platform independent path string.
