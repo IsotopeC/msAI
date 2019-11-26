@@ -33,7 +33,9 @@ class FileGrabber:
     """Functions to grab files."""
 
     @staticmethod
-    def multi_extensions(directory: str, *extensions: str, recursive: bool = True) -> Iterable[pathlib.Path]:
+    def multi_extensions(directory: str,
+                         *extensions: str,
+                         recursive: bool = True) -> Iterable[pathlib.Path]:
         """Creates an iterator of path objects to all files in a directory matching the passed extensions.
 
         Use ``str(path_obj)`` to get the platform independent path string.
@@ -129,30 +131,30 @@ class Sizer:
         print(f"objSizeMB: {obj_size_mb:.4f}")
 
     @staticmethod
-    def file_mb(file_path: str):
+    def file_mb(file: str):
         """Measures the storage size of a file in MBs.
 
         Args:
-            file_path: A string representation of the path to the file to measure.
+            file: A string representation of the path to the file to measure.
                 Path can be relative or absolute.
 
         Returns:
             The storage size of the file in MBs.
         """
 
-        file_size_mb = (os.path.getsize(file_path) * 0.000001)
+        file_size_mb = (os.path.getsize(file) * 0.000001)
         return file_size_mb
 
     @staticmethod
-    def print_file_mb(file_path):
+    def print_file_mb(file: str):
         """Prints the storage size of a file in MBs to 4 decimals.
 
         Args:
-            file_path: A string representation of the path to the file to measure.
+            file: A string representation of the path to the file to measure.
                 Path can be relative or absolute.
         """
 
-        file_size_mb = Sizer.file_mb(file_path)
+        file_size_mb = Sizer.file_mb(file)
         print(f"fileSizeMB: {file_size_mb:.4f}")
 
 
@@ -161,10 +163,15 @@ class Saver:
 
     @staticmethod
     def save_obj(obj, file):
-        """Saves a python object to the path/filename given.
+        """Saves a python object to the path / filename given.
 
         Data is serialized with pickle and compressed via bzip2.
         A sha256 hash is returned.
+
+        Args:
+            obj: The python object to save.
+            file: A string representation of the path to the file to save.
+                Path can be relative or absolute.
         """
 
         file_path = pathlib.Path(file)
