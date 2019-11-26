@@ -235,7 +235,7 @@ class Saver:
 
     @staticmethod
     def load_obj(file: str,
-                 test_hash: Optional[str]) -> Tuple[object, Optional[bool]]:
+                 test_hash: Optional[str] = None) -> Tuple[object, Optional[bool]]:
         """Loads a previously saved object.
 
         The file will be tested against a sha256 hash, if provided.
