@@ -270,12 +270,12 @@ class Saver:
 
 
 class MultiTaskDF:
-    """Applies a function to each row in a dataframe in parallel through multiprocessing."""
+    """Functions to parallelize work on dataframes through multiprocessing."""
 
     @staticmethod
-    def _parallelize(df_in: DF,
-                     subset_func) -> DF:
-        """Partitions a dataframe into subsets and assigns a worker to apply a function to each subset.
+    def _partition_by_rows(df_in: DF,
+                           subset_func) -> DF:
+        """Partitions a dataframe into subsets across rows and assigns a worker to each to apply a function.
 
         Creates a process pool with a number of workers equal to cpu count (by default),
         and splits the dataframe `df_in` into a number of subsets equal to number of workers.
@@ -304,11 +304,13 @@ class MultiTaskDF:
                             df_subset: DF) -> DF:
         """Applies a function to each row in a dataframe subset.
 
+        Rows are passed to `func` as `Series` objects whose index is the dataframe's columns.
+
         Args:
-            func: The function to apply to all rows in the `df_subset`.
-                This function must return the row, reflecting the results.
-                Additional arguments can be passed with a partial object.
-            df_subset: A dataframe subset.
+            func: The function to apply to each row in the `df_subset`.
+                This function must be a static method and return the row, reflecting the results.
+                Additional arguments can be passed with a partial object by the caller.
+            df_subset: A dataframe subset, to which a single worker applies `func` to all rows.
 
         Returns: A dataframe reflecting the changes from the applied `func`.
         """
@@ -318,18 +320,18 @@ class MultiTaskDF:
     @staticmethod
     def parallelize_on_rows(df: DF,
                             func) -> DF:
-        """Applies a function to each row in a dataframe in parallel.
+        """Applies a function to rows in a dataframe in parallel.
 
         Args:
             df: The input dataframe.
-            func: The function to apply to all rows in the `df`.
-                This function must return the row, reflecting the results.
-                Additional arguments can be passed with a partial object.
+            func: The function to apply to each row in the `df`.
+                This function must be a static method and return the row, reflecting the results.
+                Additional arguments can be passed with a partial object by the caller.
 
         Returns: A new dataframe reflecting the changes from the applied `func`.
         """
 
-        return MultiTaskDF._parallelize(df, partial(MultiTaskDF._run_on_subset_rows, func))
+        return MultiTaskDF._partition_by_rows(df, partial(MultiTaskDF._run_on_subset_rows, func))
 
 
 class EnvInfo:
