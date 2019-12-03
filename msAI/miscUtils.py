@@ -46,7 +46,7 @@ class FileGrabber:
                 Path can be relative or absolute.
             extensions: One or more file extensions specified as strings without leading (.).
             recursive: A boolean indicating if files in subdirectories are included.
-                Defaults to ``True``.
+                Defaults to `True`.
 
         Returns:
              An iterator of path objects to all files found.
@@ -84,7 +84,7 @@ class FileGrabber:
                 Path can be relative or absolute. Defaults to current directory.
 
         Returns:
-            A string of either ``'posix'`` or ``'windows'``, indicating the path type.
+            A string of either `'posix'` or `'windows'`, indicating the path type.
 
         Raises:
             MiscUtilsError: For unknown path type.
@@ -197,16 +197,16 @@ class Saver:
         """
 
         # The size of each read from the file
-        BLOCK_SIZE = 65536
+        block_size = 65536
 
         file_hash = hashlib.sha256()
 
         file_path = pathlib.Path(file)
         with open(file_path, 'rb') as file:
-            file_block = file.read(BLOCK_SIZE)
+            file_block = file.read(block_size)
             while len(file_block) > 0:
                 file_hash.update(file_block)
-                file_block = file.read(BLOCK_SIZE)
+                file_block = file.read(block_size)
 
         # Return the hexadecimal digest of the hash
         return file_hash.hexdigest()
@@ -223,7 +223,7 @@ class Saver:
 
         Returns:
             A boolean indicating if the hash value is verified.
-            ``True`` means the calculated hash matches the test hash.
+            `True` means the calculated hash matches the test hash.
         """
 
         calc_hash = Saver.get_hash(file)
