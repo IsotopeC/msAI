@@ -1,11 +1,15 @@
 
 """Miscellaneous utilities used by msAI.
 
+Todo
+    * Add type info for funcs passed as arguments
+
 """
 
 
 import msAI
 from msAI.errors import MiscUtilsError
+from msAI.types import DF
 
 import logging
 import sys
@@ -266,40 +270,66 @@ class Saver:
 
 
 class MultiTaskDF:
-    """Use multiprocessing to parallelize a function applied to all rows in a dataframe."""
+    """Applies a function to each row in a dataframe in parallel through multiprocessing."""
 
     @staticmethod
-    def _parallelize(df_in, func):
-        """Partition a dataframe and assign a pool of workers to apply a function to each part.
+    def _parallelize(df_in: DF,
+                     subset_func) -> DF:
+        """Partitions a dataframe into subsets and assigns a worker to apply a function to each subset.
 
-        Splits a dataframe into a number of subsets equal to cpu count,
-        and creates a process pool with a number of workers equal to cpu count,
-        and use each worker to apply a function to a dataframe subset.
+        Creates a process pool with a number of workers equal to cpu count (by default),
+        and splits the dataframe `df_in` into a number of subsets equal to number of workers.
+        Each worker applies the `subset_func` to a dataframe subset in parallel.
 
-        ``func`` is received as a partial object, and its call input is completed with
-        a dataframe subset after the dataframe is split.
+        Args:
+            df_in: The input dataframe.
+            subset_func: A partial object containing the function to apply to each dataframe subset.
+                This is received as a partial object, and its call input is completed with
+                a dataframe subset after the dataframe is split.
+
+        Returns: A dataframe formed by concating all subset results.
         """
 
         worker_count = msAI.WORKER_COUNT
-        df_split = np.array_split(df_in, worker_count)
+        df_part = np.array_split(df_in, worker_count)
         pool = Pool(worker_count)
 
         with pool:
-            df_out = pd.concat(pool.map(func, df_split), sort=False)
+            df_out = pd.concat(pool.map(subset_func, df_part), sort=False)
 
         return df_out
 
     @staticmethod
-    def _run_on_subset(func, df_subset):
-        """Applies a function to a dataframe subset."""
+    def _run_on_subset_rows(func,
+                            df_subset: DF) -> DF:
+        """Applies a function to each row in a dataframe subset.
+
+        Args:
+            func: The function to apply to all rows in the `df_subset`.
+                This function must return the row, reflecting the results.
+                Additional arguments can be passed with a partial object.
+            df_subset: A dataframe subset.
+
+        Returns: A dataframe reflecting the changes from the applied `func`.
+        """
 
         return df_subset.apply(func, axis=1)
 
     @staticmethod
-    def parallelize_on_rows(df, func):
-        """Parallelizes a function applied to all rows in a dataframe."""
+    def parallelize_on_rows(df: DF,
+                            func) -> DF:
+        """Applies a function to each row in a dataframe in parallel.
 
-        return MultiTaskDF._parallelize(df, partial(MultiTaskDF._run_on_subset, func))
+        Args:
+            df: The input dataframe.
+            func: The function to apply to all rows in the `df`.
+                This function must return the row, reflecting the results.
+                Additional arguments can be passed with a partial object.
+
+        Returns: A new dataframe reflecting the changes from the applied `func`.
+        """
+
+        return MultiTaskDF._parallelize(df, partial(MultiTaskDF._run_on_subset_rows, func))
 
 
 class EnvInfo:
