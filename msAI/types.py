@@ -1,6 +1,9 @@
 
 """Module containing types used by msAI.
 
+Todo
+    * Prevent pandas docs from importing and switch back to type alias
+
 """
 
 
