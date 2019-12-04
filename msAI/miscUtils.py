@@ -60,7 +60,7 @@ class FileGrabber:
         path_type = FileGrabber.path_type(directory)
         ext_list = list(set(extensions))
 
-        # While Windows paths are case insensitve, Posix paths are case sensitive.
+        # While Windows paths are case insensitive, Posix paths are case sensitive.
         # Thus the set of casefolded extensions will be used on Windows systems.
         if path_type == 'windows':
             ext_list = list(set(map(str.casefold, ext_list)))
@@ -81,7 +81,7 @@ class FileGrabber:
 
         Path type is identified by the class of Path object created.
         This test is used for determining what glob patterns to apply based on path case sensitivity.
-        Windows paths are case insensitve, while Posix paths are case sensitive.
+        Windows paths are case insensitive, while Posix paths are case sensitive.
 
         Args:
             directory: A string representation of the path to the directory.
@@ -338,7 +338,7 @@ class EnvInfo:
     """Functions to get info about the environment running python."""
 
     @staticmethod
-    def platform():
+    def platform() -> str:
         """Get a string (multiline) describing the platform in use."""
 
         return (f"Platform: {sys.platform}\n"
@@ -347,14 +347,14 @@ class EnvInfo:
                 f"Network Name: {platform.node()}")
 
     @staticmethod
-    def os():
+    def os() -> str:
         """Get a string (multiline) describing the operating system in use."""
 
         def env_item_gen():
             """Generator to iterate over key-value pairs of environment variables."""
 
             for key, value in os.environ.items():
-                yield (f"{key}: {value}")
+                yield f"{key}: {value}"
 
         return (f"OS Type: {os.name}\n"
                 f"OS Path Type: {FileGrabber.path_type()}\n"
@@ -362,7 +362,7 @@ class EnvInfo:
                 f"OS Environment Variables:\n    {(os.linesep + '    ').join(env_item_gen())}")
 
     @staticmethod
-    def python():
+    def python() -> str:
         """Get a string (multiline) describing the python interpreter in use."""
 
         return (f"Python Version: {platform.python_version()}\n"
@@ -373,13 +373,13 @@ class EnvInfo:
                 f"Python Path:\n    {(os.linesep + '    ').join(sys.path)}")
 
     @staticmethod
-    def all():
+    def all() -> str:
         """Get a string (multiline) describing the environment running python."""
 
         return os.linesep.join([EnvInfo.platform(), EnvInfo.os(), EnvInfo.python()])
 
     @staticmethod
-    def mp_method():
+    def mp_method() -> str:
         """Get a string describing the start method used by the multiprocessing module to create new processes.
 
         Defaults are set according to OS type:
