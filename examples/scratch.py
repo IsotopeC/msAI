@@ -149,6 +149,8 @@ spec331.get("ms level")
 #   If data is already centroided, raw = centroided
 spec331.peaks('centroided')
 
+spec331.peaks('raw').shape
+
 
 def obj_mb(obj):
     """
