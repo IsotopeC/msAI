@@ -189,7 +189,13 @@ class MZMLfile(MSfile):
 
         rt = spectrum.scan_time_in_minutes()
         peak_count = len(spectrum.mz)
-        tic = spectrum.TIC
+
+        try:
+            tic = spectrum.TIC
+        except AttributeError:
+            logger.warning("missing TIC value in mzML file")
+            tic = None
+
         ms_lvl = spectrum.ms_level
         filters = spectrum.get('filter string')
         spectrum_id = [spectrum.ID]
