@@ -16,6 +16,12 @@ import pandas as pd
 import pymzml
 import sys
 import os
+import resource
+
+print(resource.getrlimit(resource.RLIMIT_AS))
+resource.setrlimit(resource.RLIMIT_AS, (1073741824, -1))
+print(resource.getrlimit(resource.RLIMIT_AS))
+
 
 # Set pandas to display all columns
 pd.set_option('display.max_columns', None)
@@ -83,10 +89,6 @@ s1run = pymzml.run.Reader(sample1_mzml_path)
 
 # Get the number of spectra in file
 s1run.get_spectrum_count()
-# = 651
-
-# Get the number of chromatograms in file
-s1run.get_chromatogram_count()
 
 # Get the next spectrum element as an object via iterator
 s1run.next()
@@ -199,7 +201,7 @@ def print_all_spectra_info(mzml_file):
           f"Total Mem: {total_mb:.3f} MB")
 
 
-print_all_spectra_info(sample1_mzml_path)
+# print_all_spectra_info(sample1_mzml_path)
 
 
 def _create_spectrum_df(spectrum):
