@@ -17,11 +17,17 @@ import pymzml
 import sys
 import os
 import resource
+import psutil
 
-print(resource.getrlimit(resource.RLIMIT_AS))
-resource.setrlimit(resource.RLIMIT_AS, (1073741824, -1))
-print(resource.getrlimit(resource.RLIMIT_AS))
+print(resource.getrlimit(resource.RLIMIT_DATA))
+resource.setrlimit(resource.RLIMIT_DATA, (1073741824, -1))
+# resource.setrlimit(resource.RLIMIT_DATA, (1024000, -1))
+print(resource.getrlimit(resource.RLIMIT_DATA))
+pid = psutil.Process().pid
+print(pid)
 
+opid = os.getpid()
+print(opid)
 
 # Set pandas to display all columns
 pd.set_option('display.max_columns', None)
