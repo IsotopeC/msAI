@@ -19,15 +19,22 @@ import os
 import resource
 import psutil
 
+
 print(resource.getrlimit(resource.RLIMIT_DATA))
-resource.setrlimit(resource.RLIMIT_DATA, (1073741824, -1))
+# resource.setrlimit(resource.RLIMIT_DATA, (1073741824, -1))
 # resource.setrlimit(resource.RLIMIT_DATA, (1024000, -1))
+
+soft, hard = resource.getrlimit(resource.RLIMIT_DATA)
+memory_limit = int(psutil.virtual_memory().available * 0.9)
+resource.setrlimit(resource.RLIMIT_DATA, (memory_limit, hard))
 print(resource.getrlimit(resource.RLIMIT_DATA))
+
 pid = psutil.Process().pid
 print(pid)
-
 opid = os.getpid()
 print(opid)
+
+# raise SystemExit(1)
 
 # Set pandas to display all columns
 pd.set_option('display.max_columns', None)
