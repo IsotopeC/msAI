@@ -184,7 +184,8 @@ class Saver:
 
         file_path = pathlib.Path(file)
         with bz2.open(file_path, "wb") as save_file:
-            pickle.dump(obj, save_file, pickle.HIGHEST_PROTOCOL)
+            # pickle.dump(obj, save_file, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(obj, save_file, 4)
 
         return Saver.get_hash(file)
 
