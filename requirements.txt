@@ -5,6 +5,7 @@ numpy
 pandas
 matplotlib
 seaborn
+#numba
 #scikit-learn
 #scipy
 #bokeh
