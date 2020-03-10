@@ -22,6 +22,7 @@ import pickle
 import bz2
 import multiprocessing
 from multiprocessing import Pool
+import concurrent.futures
 from functools import partial
 import pathlib
 
@@ -294,6 +295,7 @@ class MultiTaskDF:
         worker_count = msAI.WORKER_COUNT
         df_part = np.array_split(df_in, worker_count)
         pool = Pool(worker_count)
+        # pool = concurrent.futures.ThreadPoolExecutor()
 
         with pool:
             df_out = pd.concat(pool.map(subset_func, df_part), sort=False)
