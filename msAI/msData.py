@@ -18,6 +18,7 @@ Todo
 import msAI.miscUtils as miscUtils
 from msAI.errors import MSfileSetInitError
 from msAI.miscDecos import log_timer
+from msAI.types import DF
 
 import os
 import logging
@@ -39,7 +40,24 @@ class MSfile:
     The `peaks` and `spectra` properties hold data structured in dataframes.
     """
 
+    _run_id: str
+    _run_date: str
+    _ms_file_version: str
+
+    _spectrum_count: int
+    _peak_count: int
+    _tic_sum: float
+
+    _peaks: DF
+    _spectra: DF
+
     def __init__(self):
+        """Initializes an instance of MSfile class.
+
+        No need to call this superclass initialization,
+        as subclasses provide values for all attributes initialized here.
+        """
+
         self._run_id = None
         self._run_date = None
         self._ms_file_version = None
@@ -171,7 +189,13 @@ class MZMLfile(MSfile):
 
         rt = spectrum.scan_time_in_minutes()
         peak_count = len(spectrum.mz)
-        tic = spectrum.TIC
+
+        try:
+            tic = spectrum.TIC
+        except AttributeError:
+            logger.warning("missing TIC value in mzML file")
+            tic = None
+
         ms_lvl = spectrum.ms_level
         filters = spectrum.get('filter string')
         spectrum_id = [spectrum.ID]
