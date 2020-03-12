@@ -1,11 +1,15 @@
 
 """Miscellaneous utilities used by msAI.
 
+Todo
+    * Add type info for funcs passed as arguments
+
 """
 
 
 import msAI
 from msAI.errors import MiscUtilsError
+from msAI.types import DF
 
 import logging
 import sys
@@ -46,7 +50,7 @@ class FileGrabber:
                 Path can be relative or absolute.
             extensions: One or more file extensions specified as strings without leading (.).
             recursive: A boolean indicating if files in subdirectories are included.
-                Defaults to ``True``.
+                Defaults to `True`.
 
         Returns:
              An iterator of path objects to all files found.
@@ -56,7 +60,7 @@ class FileGrabber:
         path_type = FileGrabber.path_type(directory)
         ext_list = list(set(extensions))
 
-        # While Windows paths are case insensitve, Posix paths are case sensitive.
+        # While Windows paths are case insensitive, Posix paths are case sensitive.
         # Thus the set of casefolded extensions will be used on Windows systems.
         if path_type == 'windows':
             ext_list = list(set(map(str.casefold, ext_list)))
@@ -77,14 +81,14 @@ class FileGrabber:
 
         Path type is identified by the class of Path object created.
         This test is used for determining what glob patterns to apply based on path case sensitivity.
-        Windows paths are case insensitve, while Posix paths are case sensitive.
+        Windows paths are case insensitive, while Posix paths are case sensitive.
 
         Args:
             directory: A string representation of the path to the directory.
                 Path can be relative or absolute. Defaults to current directory.
 
         Returns:
-            A string of either ``'posix'`` or ``'windows'``, indicating the path type.
+            A string of either `'posix'` or `'windows'`, indicating the path type.
 
         Raises:
             MiscUtilsError: For unknown path type.
@@ -180,7 +184,8 @@ class Saver:
 
         file_path = pathlib.Path(file)
         with bz2.open(file_path, "wb") as save_file:
-            pickle.dump(obj, save_file, pickle.HIGHEST_PROTOCOL)
+            # pickle.dump(obj, save_file, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(obj, save_file, 4)
 
         return Saver.get_hash(file)
 
@@ -197,16 +202,16 @@ class Saver:
         """
 
         # The size of each read from the file
-        BLOCK_SIZE = 65536
+        block_size = 65536
 
         file_hash = hashlib.sha256()
 
         file_path = pathlib.Path(file)
         with open(file_path, 'rb') as file:
-            file_block = file.read(BLOCK_SIZE)
+            file_block = file.read(block_size)
             while len(file_block) > 0:
                 file_hash.update(file_block)
-                file_block = file.read(BLOCK_SIZE)
+                file_block = file.read(block_size)
 
         # Return the hexadecimal digest of the hash
         return file_hash.hexdigest()
@@ -223,7 +228,7 @@ class Saver:
 
         Returns:
             A boolean indicating if the hash value is verified.
-            ``True`` means the calculated hash matches the test hash.
+            `True` means the calculated hash matches the test hash.
         """
 
         calc_hash = Saver.get_hash(file)
@@ -266,47 +271,75 @@ class Saver:
 
 
 class MultiTaskDF:
-    """Use multiprocessing to parallelize a function applied to all rows in a dataframe."""
+    """Functions to parallelize work on dataframes through multiprocessing."""
 
     @staticmethod
-    def _parallelize(df_in, func):
-        """Partition a dataframe and assign a pool of workers to apply a function to each part.
+    def _partition_by_rows(df_in: DF,
+                           subset_func) -> DF:
+        """Partitions a dataframe into subsets across rows and assigns a worker to each to apply a function.
 
-        Splits a dataframe into a number of subsets equal to cpu count,
-        and creates a process pool with a number of workers equal to cpu count,
-        and use each worker to apply a function to a dataframe subset.
+        Creates a process pool with a number of workers equal to cpu count (by default),
+        and splits the dataframe `df_in` into a number of subsets equal to number of workers.
+        Each worker applies the `subset_func` to a dataframe subset in parallel.
 
-        ``func`` is received as a partial object, and its call input is completed with
-        a dataframe subset after the dataframe is split.
+        Args:
+            df_in: The input dataframe.
+            subset_func: A partial object containing the function to apply to each dataframe subset.
+                This is received as a partial object, and its call input is completed with
+                a dataframe subset after the dataframe is split.
+
+        Returns: A dataframe formed by concating all subset results.
         """
 
         worker_count = msAI.WORKER_COUNT
-        df_split = np.array_split(df_in, worker_count)
+        df_part = np.array_split(df_in, worker_count)
         pool = Pool(worker_count)
 
         with pool:
-            df_out = pd.concat(pool.map(func, df_split), sort=False)
+            df_out = pd.concat(pool.map(subset_func, df_part), sort=False)
 
         return df_out
 
     @staticmethod
-    def _run_on_subset(func, df_subset):
-        """Applies a function to a dataframe subset."""
+    def _run_on_subset_rows(func,
+                            df_subset: DF) -> DF:
+        """Applies a function to each row in a dataframe subset.
+
+        Rows are passed to `func` as `Series` objects whose index is the dataframe's columns.
+
+        Args:
+            func: The function to apply to each row in the `df_subset`.
+                This function must be a static method and return the row, reflecting the results.
+                Additional arguments can be passed with a partial object by the caller.
+            df_subset: A dataframe subset, to which a single worker applies `func` to all rows.
+
+        Returns: A dataframe reflecting the changes from the applied `func`.
+        """
 
         return df_subset.apply(func, axis=1)
 
     @staticmethod
-    def parallelize_on_rows(df, func):
-        """Parallelizes a function applied to all rows in a dataframe."""
+    def parallelize_on_rows(df: DF,
+                            func) -> DF:
+        """Applies a function to rows in a dataframe in parallel.
 
-        return MultiTaskDF._parallelize(df, partial(MultiTaskDF._run_on_subset, func))
+        Args:
+            df: The input dataframe.
+            func: The function to apply to each row in the `df`.
+                This function must be a static method and return the row, reflecting the results.
+                Additional arguments can be passed with a partial object by the caller.
+
+        Returns: A new dataframe reflecting the changes from the applied `func`.
+        """
+
+        return MultiTaskDF._partition_by_rows(df, partial(MultiTaskDF._run_on_subset_rows, func))
 
 
 class EnvInfo:
     """Functions to get info about the environment running python."""
 
     @staticmethod
-    def platform():
+    def platform() -> str:
         """Get a string (multiline) describing the platform in use."""
 
         return (f"Platform: {sys.platform}\n"
@@ -315,14 +348,14 @@ class EnvInfo:
                 f"Network Name: {platform.node()}")
 
     @staticmethod
-    def os():
+    def os() -> str:
         """Get a string (multiline) describing the operating system in use."""
 
         def env_item_gen():
             """Generator to iterate over key-value pairs of environment variables."""
 
             for key, value in os.environ.items():
-                yield (f"{key}: {value}")
+                yield f"{key}: {value}"
 
         return (f"OS Type: {os.name}\n"
                 f"OS Path Type: {FileGrabber.path_type()}\n"
@@ -330,7 +363,7 @@ class EnvInfo:
                 f"OS Environment Variables:\n    {(os.linesep + '    ').join(env_item_gen())}")
 
     @staticmethod
-    def python():
+    def python() -> str:
         """Get a string (multiline) describing the python interpreter in use."""
 
         return (f"Python Version: {platform.python_version()}\n"
@@ -341,13 +374,13 @@ class EnvInfo:
                 f"Python Path:\n    {(os.linesep + '    ').join(sys.path)}")
 
     @staticmethod
-    def all():
+    def all() -> str:
         """Get a string (multiline) describing the environment running python."""
 
         return os.linesep.join([EnvInfo.platform(), EnvInfo.os(), EnvInfo.python()])
 
     @staticmethod
-    def mp_method():
+    def mp_method() -> str:
         """Get a string describing the start method used by the multiprocessing module to create new processes.
 
         Defaults are set according to OS type:

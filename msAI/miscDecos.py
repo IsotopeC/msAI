@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 
 
 def log_timer(func):
-    """Logs the runtime and dataframe shape (if present) of the decorated function.
+    """Decorator to log the runtime and dataframe shape (if present) of the decorated function.
 
-    If the passed function's instance object has a dataframe attribute (df), it's shape will be included.
+    If the passed function's instance object has a dataframe attribute (`df`), its shape will be included.
     The wrapped function's own module logger will be used to create the log.
     """
 

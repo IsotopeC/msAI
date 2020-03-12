@@ -144,8 +144,23 @@ sample_set.init_all_ms()
 
 # Access MS data and metadata
 sample_set.df.loc["EP2421"].run.ms.run_date
-sample_set.df.loc["EP2421"].run.ms.spectra
-sample_set.df.loc["EP2421"].run.ms.peaks
+
+spectra = sample_set.df.loc["EP2421"].run.ms.spectra
+spectra
+
+peaks = sample_set.df.loc["EP2421"].run.ms.peaks
+peaks
+
+# Access select spectra (rows) based on their column values)
+spectra = sample_set.df.loc["EP2421"].run.ms.spectra
+# by rt
+spectra.loc[spectra['rt'] > 12]
+# by ms_lvl
+ms1 = spectra.loc[spectra['ms_lvl'] == 1]
+ms1
+# Get only ms1 peaks
+peaks = sample_set.df.loc["EP2421"].run.ms.peaks
+peaks.loc[ms1.index]
 
 
 # Saving / Loading

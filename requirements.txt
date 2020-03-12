@@ -5,6 +5,7 @@ numpy
 pandas
 matplotlib
 seaborn
+#numba
 #scikit-learn
 #scipy
 #bokeh
@@ -40,6 +41,6 @@ coverage
 
 # Docs
 #------------------------------------------------
-sphinx==2.2.1
+sphinx==2.4.4
 sphinx_rtd_theme
 sphinx-autodoc-typehints
