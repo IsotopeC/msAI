@@ -122,7 +122,6 @@ class SampleSet:
         """Single-process initialization of MS data for all samples in the SampleSet."""
 
         self._df['run'].apply(SampleRun.init_ms)
-        # self._df['run'].rolling(window=1).apply(SampleRun.init_ms, raw=True, engine='numba')
 
     @staticmethod
     def _init_ms_mpf(row):
