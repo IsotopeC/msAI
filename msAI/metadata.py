@@ -19,7 +19,7 @@ Todo
 from msAI.errors import MetadataVerifyError, MetadataIndexError, MetadataInitError
 from msAI.types import Series, DF, MetaDF
 from msAI.miscUtils import Saver
-from msAI.miscDecos import log_timer
+from msAI.miscDecos import log_timer_df
 
 import os
 import logging
@@ -62,7 +62,7 @@ class SampleMetadata:
     df: MetaDF
     """The metadata dataframe."""
 
-    @log_timer
+    @log_timer_df
     def __init__(self,
                  file_path: str,
                  auto_index: bool = True):
