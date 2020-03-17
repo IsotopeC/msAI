@@ -17,7 +17,7 @@ Todo
 
 import msAI.miscUtils as miscUtils
 from msAI.errors import MSfileSetInitError
-from msAI.miscDecos import log_timer
+from msAI.miscDecos import log_timer_df
 from msAI.types import DF
 
 import os
@@ -250,7 +250,7 @@ class MSfileSet:
     msAIr_exts: ClassVar[List[str]] = ['msAIr', 'msair', 'MSAIR']
     """File extensions considered to be msAIr files."""
     
-    @log_timer
+    @log_timer_df
     def __init__(self,
                  dir_path: str,
                  data_type: str = 'all',

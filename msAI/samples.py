@@ -18,7 +18,7 @@ import msAI
 import msAI.msData as msData
 from msAI.errors import SampleRunMSinitError
 from msAI.miscUtils import Saver, MultiTaskDF
-from msAI.miscDecos import log_timer
+from msAI.miscDecos import log_timer_df
 from msAI.types import Series
 
 import logging
@@ -45,7 +45,7 @@ class SampleSet:
     but MS data is not initialized until called.
     """
 
-    @log_timer
+    @log_timer_df
     def __init__(self, ms_file_set, *sample_metadata, metadata_inner_merge=False, init_ms=False):
         self._ms_file_set = ms_file_set
         self._metadata_tuple = sample_metadata
@@ -98,7 +98,7 @@ class SampleSet:
         else:
             self._create_sampleruns_sp()
 
-    @log_timer
+    @log_timer_df
     def _create_sampleruns_sp(self):
         """Single-process creation of SampleRuns for all samples in the SampleSet."""
 
@@ -111,13 +111,13 @@ class SampleSet:
         row['run'] = SampleRun(row['path'])
         return row
 
-    @log_timer
+    @log_timer_df
     def _create_sampleruns_mp(self):
         """Multiprocess creation of SampleRuns for all samples in the SampleSet."""
 
         self._df = MultiTaskDF.parallelize_on_rows(self._df, self._create_samplerun_mpf)
 
-    @log_timer
+    @log_timer_df
     def _init_all_ms_sp(self):
         """Single-process initialization of MS data for all samples in the SampleSet."""
 
@@ -130,13 +130,13 @@ class SampleSet:
         row['run'].init_ms()
         return row
 
-    @log_timer
+    @log_timer_df
     def _init_all_ms_mp(self):
         """Multiprocess initialization of MS data for all samples in the SampleSet."""
 
         self._df = MultiTaskDF.parallelize_on_rows(self._df, self._init_ms_mpf)
 
-    @log_timer
+    @log_timer_df
     def _save_all_ms_sp(self, dir_path):
         """Single-process save of MS data for all samples in the SampleSet."""
 
@@ -149,7 +149,7 @@ class SampleSet:
         row['msAIr_hash'] = row['run'].save(dir_path, row.name)
         return row
 
-    @log_timer
+    @log_timer_df
     def _save_all_ms_mp(self, dir_path):
         """Multiprocess save of MS data for all samples in the SampleSet."""
 
