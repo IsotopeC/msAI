@@ -14,18 +14,18 @@ Todo
 """
 
 
-import msAI
-import msAI.msData as msData
-from msAI.errors import SampleRunMSinitError
-from msAI.miscUtils import Saver, MultiTaskDF
-from msAI.miscDecos import log_timer_df
-from msAI.types import Series
-
 import logging
 import os
 from functools import partial
 
 import pandas as pd
+
+import msAI
+import msAI.msData as msData
+from msAI.errors import SampleRunMSinitError
+from msAI.miscDecos import log_timer_df
+from msAI.miscUtils import Saver, MultiTaskDF
+from msAI.types import Series
 
 
 logger = logging.getLogger(__name__)

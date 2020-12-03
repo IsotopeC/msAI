@@ -41,6 +41,9 @@ class LogMode(Enum):
     """Specifies a silent logging mode."""
 
 
+# LogMode = Enum('LogMode', 'DEV RELEASE LIB NONE', module=__name__)
+
+
 def set_logging(mode: LogMode) -> logging.Logger:
     """Configures msAI logging for development, release, library, or silent use.
 

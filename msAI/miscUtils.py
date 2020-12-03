@@ -7,26 +7,26 @@ Todo
 """
 
 
-import msAI
-from msAI.errors import MiscUtilsError
-from msAI.types import DF
-
-import logging
-import sys
-import os
-import platform
-import itertools
-from typing import Iterable, Optional, Tuple
-import hashlib
-import pickle
 import bz2
+import hashlib
+import itertools
+import logging
 import multiprocessing
-from multiprocessing import Pool
-from functools import partial
+import os
 import pathlib
+import pickle
+import platform
+import sys
+from functools import partial
+from multiprocessing import Pool
+from typing import Iterable, Optional, Tuple
 
 import numpy as np
 import pandas as pd
+
+import msAI
+from msAI.errors import MiscUtilsError
+from msAI.types import DF
 
 
 logger = logging.getLogger(__name__)
@@ -274,8 +274,8 @@ class MultiTaskDF:
     """Functions to parallelize work on dataframes through multiprocessing."""
 
     @staticmethod
-    def _partition_by_rows(df_in: DF,
-                           subset_func) -> DF:
+    def _parallelize(df_in: DF,
+                     subset_func) -> DF:
         """Partitions a dataframe into subsets across rows and assigns a worker to each to apply a function.
 
         Creates a process pool with a number of workers equal to cpu count (by default),
@@ -332,7 +332,7 @@ class MultiTaskDF:
         Returns: A new dataframe reflecting the changes from the applied `func`.
         """
 
-        return MultiTaskDF._partition_by_rows(df, partial(MultiTaskDF._run_on_subset_rows, func))
+        return MultiTaskDF._parallelize(df, partial(MultiTaskDF._run_on_subset_rows, func))
 
 
 class EnvInfo:

@@ -48,35 +48,27 @@ class SampleMetadata:
 
                 * All column values are unique
                 * All entries/rows have a value for this column
+
+    Args:
+        file_path: A string representation of the path to the metadata file.
+            Path can be relative or absolute.
+        auto_index: A boolean indicating if the metadata should be automatically indexed.
+            Default is True.
+
+    Attributes:
+        file_path: A string representation of the path to the metadata file.
+        df: The metadata dataframe.
+        _hf: High fidelity copy of imported data.
+            Leave this original data untouched for future reference if needed.
+
+    Raises:
+        MetadataInitError: For an invalid file type/extension.
     """
-
-    file_path: str
-    """A string representation of the path to the metadata file."""
-
-    _hf: DF
-    """High fidelity copy of imported data.
-    
-    Leave this original data untouched for future reference if needed.
-    """
-
-    df: MetaDF
-    """The metadata dataframe."""
 
     @log_timer_df
     def __init__(self,
                  file_path: str,
                  auto_index: bool = True):
-        """Initializes an instance of SampleMetadata class.
-
-        Args:
-            file_path: A string representation of the path to the metadata file.
-                Path can be relative or absolute.
-            auto_index: A boolean indicating if the metadata should be automatically indexed.
-                Default is True.
-
-        Raises:
-            MetadataInitError: For an invalid file type/extension.
-        """
 
         self.file_path = file_path
 

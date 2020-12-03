@@ -165,7 +165,6 @@ peaks.loc[ms1.index]
 
 # Saving / Loading
 # --------------------------------------------------------------------------------
-
 # Save initialized samples via by serializing and compressing
 #   * Faster access later (do not need to parse mzML files)
 #   * Smaller storage size
