@@ -13,7 +13,7 @@ seaborn
 
 # Machine Learning
 #------------------------------------------------
-tensorflow
+#tensorflow
 #tensorflow-gpu
 
 
@@ -43,4 +43,4 @@ coverage
 #------------------------------------------------
 sphinx==2.4.4
 sphinx_rtd_theme
-sphinx-autodoc-typehints
+#sphinx-autodoc-typehints

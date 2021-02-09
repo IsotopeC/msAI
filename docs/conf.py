@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # Project information
 # --------------------------------------------------------------------------------
 project = 'msAI'
-copyright = '2019'
+copyright = '2021'
 author = 'Calvin Peters'
 
 # Full version, including alpha/beta/rc tags
